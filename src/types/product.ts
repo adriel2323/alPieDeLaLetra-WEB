@@ -1,6 +1,12 @@
-export type ProductCategory = 'agendas' | 'cuadernos' | 'recetarios' | 'libretas';
+export type ProductCategory = 'agendas' | 'cuadernos' | 'recetarios' | 'libretas' |'agendas docentes'|'especiales';
 
-export type ProductSize = 'A5' | 'A4' | 'A4.5' | 'Pocket';
+export type ProductSize = 'A5' | 'A4' 
+
+export type ModeloType = {
+  id: string;
+  image: string;   // URL de la miniatura
+  modelo: string;  // ej: "semanal", "dos-dias", "universitaria", etc.
+}
 
 export type InteriorType = 
   | 'semanal' 
@@ -11,12 +17,28 @@ export type InteriorType =
   | 'rayado'
   | 'liso'
   | 'cuadriculado'
-  | 'recetas';
+  | 'recetas'
+  |'Docente nivel inicial'
+  |'Docente nivel primario'
+  |'Docente nivel secundario/universitario'
+  |'Cuaderno con planner'
+  |'Cuaderno hojas rayadas'
+  |'Cuaderno hojas cuadriculadas'
+  |'Cuaderno hojas lisas'
+  |'Cuaderno hojas puntilladas'
+  |'Cuaderno emprendedor'
+  |'2 pedidos por hoja'
+  |'3 pedidos por hoja'
+  |'6 pedidos por hoja'
+  |'Cuaderno docente inicial perpetuo'
+  |'Cuaderno docente primaria perpetuo'
+  |'Cuaderno docente secundaria perpetuo'
+  |'Planner semanal perpetuo con horarios';
 
 export type CoverType = 'dura' | 'blanda';
 
 export interface Product {
-  id: string;
+  id: number;
   name: string;
   slug: string;
   category: ProductCategory;
