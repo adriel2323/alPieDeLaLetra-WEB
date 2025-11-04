@@ -12,7 +12,7 @@ type Props = {
   label?: string;
   options: AgendaModelOption[];
   value?: string | null; // modelo seleccionado
-  onChange?: (modelo: string) => void;
+  onChange?: (id: string) => void;
   className?: string;
 };
 
@@ -33,9 +33,9 @@ export function AgendaModelSelector({
   }, [value]);
 
   const setSelected = useCallback(
-    (modelo: string) => {
-      if (typeof value === "undefined") setInternal(modelo);
-      onChange?.(modelo);
+    (id: string) => {
+      if (typeof value === "undefined") setInternal(id);
+      onChange?.(id);
     },
     [onChange, value]
   );
@@ -53,7 +53,7 @@ export function AgendaModelSelector({
     } else if (["ArrowLeft", "ArrowUp"].includes(e.key)) {
       e.preventDefault();
       const prev = (currentIndex - 1 + options.length) % options.length;
-      setSelected(options[prev].modelo);
+      setSelected(options[prev].id);
       focusAt(prev);
     }
   };
@@ -65,22 +65,22 @@ export function AgendaModelSelector({
       <div
         role="radiogroup"
         aria-labelledby={groupId}
-        className="grid grid-cols-4 xs:grid-cols-5 sm:grid-cols-6 gap-3"
+        className="flex flex-row gap-3"
         onKeyDown={handleKeyDown}
       >
         {options.map((opt, idx) => {
-          const checked = internal === opt.modelo;
+          const checked = internal === opt.id;
           return (
             <button
               key={opt.id}
               ref={el => (refs.current[idx] = el)}
               role="radio"
               aria-checked={checked}
-              aria-label={opt.modelo}
-              onClick={() => setSelected(opt.modelo)}
+              aria-label={opt.id}
+              onClick={() => setSelected(opt.id)}
               className={clsx(
                 "relative aspect-square w-full rounded-xl overflow-hidden",
-                "ring-1 ring-muted-foreground/20",
+                "ring-3 ring-primary/40",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary",
                 checked
                   ? "ring-2 ring-primary ring-offset-2"
@@ -90,7 +90,7 @@ export function AgendaModelSelector({
             >
               <img
                 src={opt.image}
-                alt={`Modelo ${opt.modelo}`}
+                alt={`Modelo ${opt.id}`}
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
@@ -101,24 +101,10 @@ export function AgendaModelSelector({
             </button>
           );
         })}
+        
       </div>
 
-      {/* Radios reales invisibles para formularios si los necesitás */}
-      <fieldset className="sr-only" aria-hidden="true">
-        <legend id={groupId}>{label}</legend>
-        {options.map(opt => (
-          <label key={opt.id}>
-            <input
-              type="radio"
-              name="agenda-modelo"
-              value={opt.modelo}
-              checked={(internal ?? "") === opt.modelo}
-              onChange={() => setSelected(opt.modelo)}
-            />
-            {opt.modelo}
-          </label>
-        ))}
-      </fieldset>
+      
     </div>
   );
 }

@@ -34,9 +34,10 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [selectedModel, setSelectedModel] = useState<string | null>(modeloOptions[0]?.modelo ?? null);
 
+  console.log('Selected Model:', selectedModel);
   if (!product) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center overflow-x-clip">
         <div className="text-center space-y-4">
           <h1 className="text-4xl font-bold">Producto no encontrado</h1>
           <Button asChild>
@@ -80,7 +81,7 @@ Cantidad: ${quantity}
   }).format(product.basePrice * quantity);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen w-full">
       <Header />
       <main className="py-8">
         <div className="container px-4">
