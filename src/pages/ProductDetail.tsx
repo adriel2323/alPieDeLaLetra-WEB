@@ -12,6 +12,15 @@ import { useCart } from '@/hooks/use-cart';
 import { toast } from 'sonner';
 import { ArrowLeft, ShoppingCart, Package, Clock, CheckCircle } from 'lucide-react';
 import { ProductSize, InteriorType, CoverType } from '@/types/product';
+import { AgendaModelSelector, AgendaModelOption } from "@/components/products/AgendaModelOption";
+
+const modeloOptions: AgendaModelOption[] = [
+  { id: "1", image: "/src/assets/models/16.webp", modelo: "semanal" },
+  { id: "2", image: "/src/assets/models/18.webp", modelo: "dos dias por hoja" },
+  { id: "3", image: "/src/assets/models/19.webp", modelo: "universitaria" },
+  { id: "4", image: "/src/assets/models/20.webp", modelo: "docentes" },
+  { id: "5", image: "/src/assets/models/21.webp", modelo: "perpetua" },
+];
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -23,6 +32,7 @@ const ProductDetail = () => {
   const [selectedCover, setSelectedCover] = useState<CoverType>(product?.coverTypes[0] || 'dura');
   const [personalization, setPersonalization] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [selectedModel, setSelectedModel] = useState<string | null>(modeloOptions[0]?.modelo ?? null);
 
   if (!product) {
     return (
@@ -213,7 +223,17 @@ Cantidad: ${quantity}
                   className="w-full"
                 />
               </div>
-
+              <div className="space-y-2">
+                <Label>Modelo de Agenda</Label>
+                <AgendaModelSelector
+                  options={modeloOptions}
+                  value={selectedModel}
+                  onChange={setSelectedModel}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Tocá un modelo para previsualizar y continuar.
+                </p>
+              </div>
               {/* Product Details */}
               <div className="space-y-6 pt-6 border-t">
                 <div>
