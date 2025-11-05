@@ -1,8 +1,99 @@
-import { Product } from '@/types/product';
+import { Product,ModelAssets } from '@/types/product';
 import agendaSemanal from '@/assets/agenda-semanal.jpg';
 import cuadernoUniversitario from '@/assets/cuaderno-universitario.jpg';
 import recetario from '@/assets/recetario.jpg';
 import libreta from '@/assets/libreta.jpg';
+
+export const modelAssets: ModelAssets = 
+{
+  "agenda-docente-secundario": [
+    "/src/assets/contenido/agenda-docente-secundario_0001.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0002.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0003.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0004.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0005.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0006.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0007.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0008.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0009.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0010.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0011.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0012.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0013.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0014.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0015.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0016.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0017.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0018.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0019.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0020.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0021.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0022.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0023.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0024.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0025.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0026.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0027.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0028.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0029.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0030.webp",
+    "/src/assets/contenido/agenda-docente-secundario_0031.webp"
+  ],
+  "agenda-semanal": [
+    "/src/assets/contenido/agenda-semanal_0001.webp",
+    "/src/assets/contenido/agenda-semanal_0002.webp",
+    "/src/assets/contenido/agenda-semanal_0003.webp",
+    "/src/assets/contenido/agenda-semanal_0004.webp",
+    "/src/assets/contenido/agenda-semanal_0005.webp",
+    "/src/assets/contenido/agenda-semanal_0006.webp",
+    "/src/assets/contenido/agenda-semanal_0007.webp",
+    "/src/assets/contenido/agenda-semanal_0008.webp",
+    "/src/assets/contenido/agenda-semanal_0010.webp",
+    "/src/assets/contenido/agenda-semanal_0011.webp",
+    "/src/assets/contenido/agenda-semanal_0012.webp",
+    "/src/assets/contenido/agenda-semanal_0013.webp",
+    "/src/assets/contenido/agenda-semanal_0014.webp",
+    "/src/assets/contenido/agenda-semanal_0021.webp",
+    "/src/assets/contenido/agenda-semanal_0024.webp",
+    "/src/assets/contenido/agenda-semanal_0026.webp",
+    "/src/assets/contenido/agenda-semanal_0027.webp",
+    "/src/assets/contenido/agenda-semanal_0028.webp",
+    "/src/assets/contenido/agenda-semanal_0029.webp"
+  ],
+  "cuaderno-docente": [
+    "/src/assets/contenido/cuaderno-docente_0001.webp",
+    "/src/assets/contenido/cuaderno-docente_0002.webp",
+    "/src/assets/contenido/cuaderno-docente_0003.webp",
+    "/src/assets/contenido/cuaderno-docente_0004.webp",
+    "/src/assets/contenido/cuaderno-docente_0005.webp",
+    "/src/assets/contenido/cuaderno-docente_0006.webp",
+    "/src/assets/contenido/cuaderno-docente_0007.webp",
+    "/src/assets/contenido/cuaderno-docente_0008.webp",
+    "/src/assets/contenido/cuaderno-docente_0009.webp",
+    "/src/assets/contenido/cuaderno-docente_0010.webp"
+  ],
+  "cuaderno-emprendedor": [
+    "/src/assets/contenido/cuaderno-emprendedor_0001.webp"
+  ],
+  "planner-semanal-perpetuo": [
+    "/src/assets/contenido/planner-semanal-perpetuo_0001.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0002.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0003.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0004.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0005.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0006.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0007.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0008.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0009.webp",
+    "/src/assets/contenido/planner-semanal-perpetuo_0010.webp"
+  ],
+  "recetarios": [
+    "/src/assets/contenido/recetarios_0001.webp",
+    "/src/assets/contenido/recetarios_0002.webp",
+    "/src/assets/contenido/recetarios_0003.webp",
+    "/src/assets/contenido/recetarios_0005.webp"
+  ]
+}
 
 export const products: Product[] = [
   {
@@ -32,7 +123,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["agenda-semanal"]
   },
   {
     id: 2,
@@ -61,7 +152,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["agenda-semanal"]
   },
   {
     id: 3,
@@ -91,7 +182,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["agenda-semanal"]
   },
   {
     id: 4,
@@ -132,7 +223,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["agenda-docente-secundario"]
   },
   {
     id: 5,
@@ -176,7 +267,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["agenda-docente-secundario"]
   },
   {
     id: 6,
@@ -216,7 +307,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["agenda-docente-secundario"]
   },
   {
     id: 7,
@@ -240,7 +331,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["planner-semanal-perpetuo"]
   },
   {
     id: 8,
@@ -262,7 +353,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["planner-semanal-perpetuo"]
   },
   {
     id: 9,
@@ -284,7 +375,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["planner-semanal-perpetuo"]
   },
   {
     id: 10,
@@ -313,7 +404,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["cuaderno-emprendedor"]
   },
   {
     id: 11,
@@ -334,7 +425,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["cuaderno-emprendedor"]
   },
   {
     id: 12,
@@ -358,7 +449,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: []
+    images: modelAssets["planner-semanal-perpetuo"]
   },
   {
     id: 13,
@@ -380,7 +471,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 10,
-    images: []
+    images: modelAssets["recetarios"]
   },
   {
     id: 14,
@@ -403,7 +494,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 10,
-    images: []
+    images: modelAssets["agenda-docente-secundario"]
   }
 ];
 // export const products: Product[] = [

@@ -2,6 +2,10 @@ export type ProductCategory = 'agendas' | 'cuadernos' | 'recetarios' | 'libretas
 
 export type ProductSize = 'A5' | 'A4' 
 
+export type ModelAssets = {
+  [key: string]: string[];
+};
+
 export type ModeloType = {
   id: string;
   image: string;   // URL de la miniatura

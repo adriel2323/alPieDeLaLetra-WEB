@@ -13,6 +13,8 @@ import { toast } from 'sonner';
 import { ArrowLeft, ShoppingCart, Package, Clock, CheckCircle } from 'lucide-react';
 import { ProductSize, InteriorType, CoverType } from '@/types/product';
 import { AgendaModelSelector, AgendaModelOption } from "@/components/products/AgendaModelOption";
+import FullscreenModelDialog from '@/components/products/FullscreenModelDialog'; 
+import ProductImageGallery from '@/components/products/ProductImageGallery';
 
 const modeloOptions: AgendaModelOption[] = [
   { id: "1", image: "/src/assets/models/16.webp", modelo: "semanal" },
@@ -33,8 +35,13 @@ const ProductDetail = () => {
   const [personalization, setPersonalization] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [selectedModel, setSelectedModel] = useState<string | null>(modeloOptions[0]?.modelo ?? null);
+  const [fsImage, setFsImage] = useState<string | null>(null);
 
   console.log('Selected Model:', selectedModel);
+  const selectedModelImage =
+  modeloOptions.find(m => m.id === selectedModel)?.image ??
+  product.images[0]; // fallback
+
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center overflow-x-clip">
@@ -80,6 +87,8 @@ Cantidad: ${quantity}
     minimumFractionDigits: 0,
   }).format(product.basePrice * quantity);
 
+  const currentMainImage = product.images?.[0] ?? '';
+
   return (
     <div className="min-h-screen w-full">
       <Header />
@@ -93,25 +102,14 @@ Cantidad: ${quantity}
             </Link>
           </Button>
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid lg:grid-cols-2 gap-12" >
             {/* Images */}
             <div className="space-y-4">
-              <div className="aspect-square rounded-lg overflow-hidden bg-muted">
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              {product.images.length > 1 && (
-                <div className="grid grid-cols-4 gap-4">
-                  {product.images.slice(1).map((image, i) => (
-                    <div key={i} className="aspect-square rounded-lg overflow-hidden bg-muted">
-                      <img src={image} alt={`${product.name} ${i + 2}`} className="w-full h-full object-cover" />
-                    </div>
-                  ))}
-                </div>
-              )}
+              <ProductImageGallery
+                images={product.images}
+                altBase={product.name}
+                onOpenFullscreen={(src) => setFsImage(src)} // botón lupa opcional
+              />
             </div>
 
             {/* Product Info */}
@@ -231,9 +229,25 @@ Cantidad: ${quantity}
                   value={selectedModel}
                   onChange={setSelectedModel}
                 />
-                <p className="text-xs text-muted-foreground mt-1">
-                  Tocá un modelo para previsualizar y continuar.
-                </p>
+                
+                {/* Vista ampliada del modelo seleccionado */}
+                <div className=" space-y-2 py-2">
+
+                  <FullscreenModelDialog
+                    src={selectedModelImage}
+                    alt={`Modelo ${selectedModel ?? "seleccionado"}`}
+                    trigger={
+                      <button
+                        className="w-full rounded-xl overflow-hidden ring-1 ring-muted-foreground/20 p-2 flex items-center justify-center "
+                        aria-label="Abrir vista ampliada"
+                      >
+                        <div className=" text-sm text-muted-foreground text-left">
+                          Vista ampliada (zoom y pantalla completa)
+                        </div>
+                      </button>
+                    }
+                  />
+                </div>
               </div>
               {/* Product Details */}
               <div className="space-y-6 pt-6 border-t">

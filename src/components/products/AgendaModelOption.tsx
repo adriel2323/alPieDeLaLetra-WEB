@@ -60,7 +60,6 @@ export function AgendaModelSelector({
 
   return (
     <div className={clsx("space-y-2", className)}>
-      <span className="block text-sm font-medium">{label}</span>
 
       <div
         role="radiogroup"
@@ -83,7 +82,7 @@ export function AgendaModelSelector({
                 "ring-3 ring-primary/40",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary",
                 checked
-                  ? "ring-2 ring-primary ring-offset-2"
+                  ? "ring-4 ring-primary ring-offset-2"
                   : "hover:ring-2 hover:ring-muted-foreground/40"
               )}
               tabIndex={checked || (internal == null && idx === 0) ? 0 : -1}
