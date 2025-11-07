@@ -6,6 +6,7 @@ export type AgendaModelOption = {
   id: string;
   image: string;   // URL de la miniatura
   modelo: string;  // ej: "semanal", "dos-dias", "universitaria", etc.
+  collection: string;  // ej: "semanal", "dos-dias", "universitaria", etc.
 };
 
 type Props = {

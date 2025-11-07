@@ -1,269 +1,284 @@
+// src/pages/Checkout.tsx
+import { useMemo, useState } from 'react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
-import { useCart } from '@/hooks/use-cart';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { ArrowLeft, ShoppingCart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ShoppingBag, CreditCard, Truck } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
-import vars from '@/data/data';
+import { useCart } from '@/hooks/use-cart';
+import AppVars from '@/data/data';
+
+const fmtARS = (n: number) =>
+  new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(n);
+
+const buildWaLink = (phoneNumber: string, message: string) =>
+  `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+
+type DeliveryMethod = 'retiro' | 'envio';
 
 const Checkout = () => {
-  const { items, getTotalPrice, clearCart } = useCart();
   const navigate = useNavigate();
-  const [isProcessing, setIsProcessing] = useState(false);
+  const { items, getTotalPrice, clearCart } = useCart();
 
-  const total = getTotalPrice();
-  const formattedTotal = new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    minimumFractionDigits: 0,
-  }).format(total);
+  // Datos del comprador
+  const [buyerName, setBuyerName] = useState('');
+  const [buyerCity, setBuyerCity] = useState('');
+  const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>('retiro');
+  const [deliveryAddress, setDeliveryAddress] = useState(''); // si envío
+  const [buyerNotes, setBuyerNotes] = useState('');
 
-  if (items.length === 0) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <main className="flex-1 flex items-center justify-center py-16">
-          <div className="container px-4 text-center space-y-6">
-            <ShoppingBag className="h-24 w-24 mx-auto text-muted-foreground" />
-            <h1 className="text-4xl font-bold">No hay productos en el carrito</h1>
-            <Button asChild size="lg">
-              <Link to="/catalogo">Ir al Catálogo</Link>
-            </Button>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
+  // (Opcional) método de pago para informar en el mensaje
+  const [paymentMethod, setPaymentMethod] = useState<'efectivo' | 'transferencia' | 'mercado-pago'>('efectivo');
 
-  const handleSubmit = (e: React.FormEvent) => {
-  e.preventDefault();
+  const whatsappMessage = useMemo(() => {
+    const lines: string[] = [];
+    lines.push('¡Hola! Quiero *finalizar la compra* 👋');
+    lines.push('');
 
-  const form = e.target as HTMLFormElement;
-  const data = {
-    nombre: (form.querySelector("#firstName") as HTMLInputElement)?.value || "",
-    apellido: (form.querySelector("#lastName") as HTMLInputElement)?.value || "",
-    email: (form.querySelector("#email") as HTMLInputElement)?.value || "",
-    telefono: (form.querySelector("#phone") as HTMLInputElement)?.value || "",
-    direccion: (form.querySelector("#address") as HTMLInputElement)?.value || "",
-    ciudad: (form.querySelector("#city") as HTMLInputElement)?.value || "",
-    provincia: (form.querySelector("#province") as HTMLInputElement)?.value || "",
-    codigoPostal: (form.querySelector("#postalCode") as HTMLInputElement)?.value || "",
-  };
+    if (!items || items.length === 0) {
+      lines.push('_(No tengo productos en el carrito aún)_');
+    } else {
+      lines.push('*Detalle del pedido:*');
+      lines.push('');
+      items.forEach((it, idx) => {
+        const name = it.product?.name ?? 'Producto';
+        const qty = it.quantity ?? 1;
+        const unit = it.price ?? it.product?.basePrice ?? 0;
+        const subtotal = unit * qty;
 
-  // 🧾 Construir detalle de los productos
-  const detalleProductos = items
-    .map((item) => {
-      const itemTotal = item.price * item.quantity;
-      const formattedPrice = new Intl.NumberFormat("es-AR", {
-        style: "currency",
-        currency: "ARS",
-        minimumFractionDigits: 0,
-      }).format(itemTotal);
-      return `• ${item.product.name} (${item.selectedSize || ""}) x${item.quantity} — ${formattedPrice}${
-        item.personalization ? `\n   🖋️ Personalización: "${item.personalization}"` : ""
-      }`;
-    })
-    .join("\n");
+        lines.push(`• ${idx + 1}) *${name}* x${qty}`);
+        if (it.selectedModel) lines.push(`   Modelo: ${it.selectedModel}`);
+        if (it.selectedSize) lines.push(`   Tamaño: ${it.selectedSize}`);
+        if (it.selectedInterior) lines.push(`   Interior: ${it.selectedInterior}`);
+        if (it.selectedCover) lines.push(`   Tapa: ${it.selectedCover}`);
+        if (it.personalization) lines.push(`   Personalización: “${it.personalization}”`);
+        lines.push(`   Unitario: ${fmtARS(unit)}  |  Subtotal: ${fmtARS(subtotal)}`);
+        lines.push('');
+      });
 
-  // 💬 Armar mensaje de WhatsApp
-  const mensaje = `
-🛍️ *Nuevo pedido desde la tienda online*
+      lines.push(`*Total estimado:* ${fmtARS(getTotalPrice())}`);
+      lines.push('');
+    }
 
-👤 *Datos del comprador:*
-Nombre: ${data.nombre} ${data.apellido}
-Email: ${data.email}
-Teléfono: ${data.telefono}
+    lines.push('*Datos del comprador:*');
+    lines.push(`• Nombre: ${buyerName || 'A completar'}`);
+    lines.push(`• Ciudad/Localidad: ${buyerCity || 'A completar'}`);
+    lines.push(`• Entrega: ${deliveryMethod === 'envio' ? 'Envío a domicilio' : 'Retiro en punto de entrega'}`);
+    if (deliveryMethod === 'envio') {
+      lines.push(`• Dirección: ${deliveryAddress || 'A completar'}`);
+    }
+    if (buyerNotes) {
+      lines.push(`• Notas: ${buyerNotes}`);
+    }
+    lines.push(`• Método de pago preferido: ${paymentMethod.replace('-', ' ')}`);
+    lines.push('');
+    lines.push('¿Me confirmás disponibilidad y próximos pasos? ¡Gracias!');
 
-📦 *Envío:*
-Dirección: ${data.direccion}
-Ciudad: ${data.ciudad}
-Provincia: ${data.provincia}
-Código Postal: ${data.codigoPostal}
+    return lines.join('\n');
+  }, [items, getTotalPrice, buyerName, buyerCity, deliveryMethod, deliveryAddress, buyerNotes, paymentMethod]);
 
-🧾 *Detalle del pedido:*
-${detalleProductos}
+  const phoneNumber = AppVars.phoneNumber; // ej.: 549336XXXXXXX
+  const waHref = buildWaLink(phoneNumber, whatsappMessage);
 
-💰 *Total:* ${formattedTotal}
-
-🚚 Método de envío: A coordinar
-💳 Método de pago: Mercado Pago o Transferencia
-`;
-
-  // 📲 Número de WhatsApp de destino (sin + ni espacios)
-  const numero = vars.phoneNumber // ← poné acá tu número
-  console.log("Número de WhatsApp:", numero);
-
-  const url = `https://wa.me/${numero}?text=${encodeURIComponent(mensaje)}`;
-  window.open(url, "_blank");
-  clearCart();
-  setIsProcessing(true);
-  toast.success("Redirigiendo a WhatsApp...");
-  setTimeout(() => {
-    setIsProcessing(false);
-    navigate("/");
-  }, 3000);
-};
-
+  const canContinue =
+    (items?.length ?? 0) > 0 &&
+    buyerName.trim().length > 1 &&
+    buyerCity.trim().length > 1 &&
+    (deliveryMethod === 'retiro' || (deliveryMethod === 'envio' && deliveryAddress.trim().length > 3));
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen overflow-x-clip">
       <Header />
-      <main className="flex-1 py-12">
-        <div className="container px-4 max-w-6xl">
-          <h1 className="text-4xl font-bold mb-8">Finalizar Compra</h1>
+      <main className="py-8 w-full max-w-full">
+        <div className="container px-4">
+          {/* Breadcrumb */}
+          <Button variant="ghost" asChild className="mb-6">
+            <Link to="/catalogo" className="flex items-center gap-2">
+              <ArrowLeft className="h-4 w-4" />
+              Seguir comprando
+            </Link>
+          </Button>
 
-          <form onSubmit={handleSubmit}>
-            <div className="grid lg:grid-cols-3 gap-8">
-              {/* Checkout Form */}
-              <div className="lg:col-span-2 space-y-6">
-                {/* Contact Info */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <CreditCard className="h-5 w-5" />
-                      Información de Contacto
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="firstName">Nombre *</Label>
-                        <Input id="firstName" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="lastName">Apellido *</Label>
-                        <Input id="lastName" required />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email *</Label>
-                      <Input id="email" type="email" required />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Teléfono *</Label>
-                      <Input id="phone" type="tel" required />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Shipping Info */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Truck className="h-5 w-5" />
-                      Información de Envío
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="address">Dirección *</Label>
-                      <Input id="address" required />
-                    </div>
-                    <div className="grid sm:grid-cols-2 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="city">Ciudad *</Label>
-                        <Input id="city" required />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="province">Provincia *</Label>
-                        <Input id="province" required />
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="postalCode">Código Postal *</Label>
-                      <Input id="postalCode" required />
-                    </div>
-                  </CardContent>
-                </Card>
-
-                {/* Payment Note */}
-                <Card className="bg-soft/50 border-primary/20">
-                  <CardContent className="p-6">
-                    <p className="text-sm font-medium mb-2">💳 Medios de Pago</p>
-                    <p className="text-sm text-muted-foreground">
-                      En el siguiente paso podrás pagar con Mercado Pago (tarjetas de débito, crédito, efectivo) o transferencia bancaria.
-                    </p>
-                  </CardContent>
-                </Card>
+          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+            {/* Datos del comprador */}
+            <section className="lg:col-span-2 space-y-6">
+              <div className="space-y-2">
+                <h1 className="text-2xl sm:text-3xl font-bold">Finalizar compra</h1>
+                <p className="text-sm text-muted-foreground">
+                  Completá tus datos para enviarnos el pedido por WhatsApp y coordinar el pago/envío.
+                </p>
               </div>
 
-              {/* Order Summary */}
-              <div className="lg:col-span-1">
-                <Card className="sticky top-24">
-                  <CardHeader>
-                    <CardTitle>Resumen del Pedido</CardTitle>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      {items.map((item) => {
-                        const itemTotal = item.price * item.quantity;
-                        const formattedPrice = new Intl.NumberFormat('es-AR', {
-                          style: 'currency',
-                          currency: 'ARS',
-                          minimumFractionDigits: 0,
-                        }).format(itemTotal);
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="buyerName">Nombre y apellido</Label>
+                  <Input
+                    id="buyerName"
+                    value={buyerName}
+                    onChange={(e) => setBuyerName(e.target.value)}
+                    placeholder="Ej.: María López"
+                  />
+                </div>
 
-                        return (
-                          <div key={`${item.product.id}-${item.selectedSize}`} className="flex gap-3">
-                            <div className="w-16 h-16 rounded bg-muted overflow-hidden shrink-0">
-                              <img
-                                src={item.product.images[0]}
-                                alt={item.product.name}
-                                className="w-full h-full object-cover"
-                              />
-                            </div>
-                            <div className="flex-1 text-sm">
-                              <p className="font-medium line-clamp-1">{item.product.name}</p>
-                              {item.personalization && (
-                                <p className="text-xs text-primary">"{item.personalization}"</p>
-                              )}
-                              <p className="text-xs text-muted-foreground">
-                                {item.selectedSize} • Cant: {item.quantity}
-                              </p>
-                              <p className="font-medium mt-1">{formattedPrice}</p>
+                <div className="space-y-2">
+                  <Label htmlFor="buyerCity">Ciudad / Localidad</Label>
+                  <Input
+                    id="buyerCity"
+                    value={buyerCity}
+                    onChange={(e) => setBuyerCity(e.target.value)}
+                    placeholder="Ej.: San Nicolás de los Arroyos"
+                  />
+                </div>
+
+                <div className="space-y-2 sm:col-span-2">
+                  <Label>Entrega</Label>
+                  <RadioGroup
+                    value={deliveryMethod}
+                    onValueChange={(v) => setDeliveryMethod(v as DeliveryMethod)}
+                    className="flex flex-wrap gap-6"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="retiro" id="retiro" />
+                      <Label htmlFor="retiro">Retiro en punto de entrega</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="envio" id="envio" />
+                      <Label htmlFor="envio">Envío a domicilio</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+
+                {deliveryMethod === 'envio' && (
+                  <div className="space-y-2 sm:col-span-2">
+                    <Label htmlFor="deliveryAddress">Dirección</Label>
+                    <Input
+                      id="deliveryAddress"
+                      value={deliveryAddress}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                      placeholder="Calle, número, barrio, referencias"
+                    />
+                  </div>
+                )}
+
+                <div className="space-y-2 sm:col-span-2">
+                  <Label htmlFor="buyerNotes">Notas (opcional)</Label>
+                  <Textarea
+                    id="buyerNotes"
+                    value={buyerNotes}
+                    onChange={(e) => setBuyerNotes(e.target.value)}
+                    placeholder="Aclaraciones, horarios para recibir, color favorito, etc."
+                  />
+                </div>
+
+                <div className="space-y-2 sm:col-span-2">
+                  <Label>Método de pago preferido</Label>
+                  <RadioGroup
+                    value={paymentMethod}
+                    onValueChange={(v) => setPaymentMethod(v as 'efectivo' | 'transferencia' | 'mercado-pago')}
+                    className="flex flex-wrap gap-6"
+                  >
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="efectivo" id="p-efectivo" />
+                      <Label htmlFor="p-efectivo">Efectivo</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="transferencia" id="p-transf" />
+                      <Label htmlFor="p-transf">Transferencia</Label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <RadioGroupItem value="mercado-pago" id="p-mp" />
+                      <Label htmlFor="p-mp">Mercado Pago</Label>
+                    </div>
+                  </RadioGroup>
+                </div>
+              </div>
+            </section>
+
+            {/* Resumen */}
+            <aside className="lg:col-span-1 space-y-4">
+              <div className="rounded-2xl border p-4 sm:p-5">
+                <div className="flex items-center justify-between mb-3">
+                  <h2 className="font-semibold">Tu carrito</h2>
+                  <Badge variant="outline">{items?.length ?? 0} ítems</Badge>
+                </div>
+
+                <div className="space-y-3 max-h-[40svh] overflow-auto pr-1
+                  [scrollbar-width:thin] [scrollbar-color:theme(colors.slate.400)_transparent]
+                  [&::-webkit-scrollbar]:w-2
+                  [&::-webkit-scrollbar-track]:bg-transparent
+                  [&::-webkit-scrollbar-thumb]:bg-slate-400/60
+                  hover:[&::-webkit-scrollbar-thumb]:bg-slate-500/70
+                  [&::-webkit-scrollbar-thumb]:rounded-full">
+                  {(!items || items.length === 0) && (
+                    <p className="text-sm text-muted-foreground">Tu carrito está vacío.</p>
+                  )}
+                  {items?.map((it, i) => {
+                    const unit = it.price ?? it.product?.basePrice ?? 0;
+                    return (
+                      <div key={i} className="border rounded-xl p-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="min-w-0">
+                            <p className="font-medium break-words">{it.product?.name ?? 'Producto'}</p>
+                            <div className="text-xs text-muted-foreground space-y-0.5 mt-1">
+                              {it.selectedModel && <p>Modelo: {it.selectedModel}</p>}
+                              {it.selectedSize && <p>Tamaño: {it.selectedSize}</p>}
+                              {it.selectedInterior && <p>Interior: {it.selectedInterior}</p>}
+                              {it.selectedCover && <p>Tapa: {it.selectedCover}</p>}
+                              {it.personalization && <p>Personalización: “{it.personalization}”</p>}
                             </div>
                           </div>
-                        );
-                      })}
-                    </div>
-
-                    <Separator />
-
-                    <div className="space-y-2">
-                      <div className="flex justify-between text-sm">
-                        <span>Subtotal</span>
-                        <span>{formattedTotal}</span>
+                          <div className="text-right shrink-0">
+                            <p className="text-sm">x{it.quantity ?? 1}</p>
+                            <p className="text-sm text-muted-foreground">{fmtARS(unit)}</p>
+                          </div>
+                        </div>
                       </div>
-                      <div className="flex justify-between text-sm">
-                        <span>Envío</span>
-                        <span>A calcular</span>
-                      </div>
-                      <Separator />
-                      <div className="flex justify-between text-lg font-bold">
-                        <span>Total</span>
-                        <span className="text-primary">{formattedTotal}</span>
-                      </div>
-                    </div>
+                    );
+                  })}
+                </div>
 
-                    <Button type="submit" size="lg" className="w-full" disabled={isProcessing}>
-                      {isProcessing ? 'Procesando...' : 'Continuar al Pago'}
-                    </Button>
+                <div className="flex items-center justify-between mt-4">
+                  <p className="font-semibold">Total</p>
+                  <p className="font-semibold">{fmtARS(getTotalPrice())}</p>
+                </div>
 
-                    <p className="text-xs text-muted-foreground text-center">
-                      Al continuar, aceptás nuestros términos y condiciones
-                    </p>
-                  </CardContent>
-                </Card>
+
+                {/* Continuar al pago -> WhatsApp + limpiar carrito + gracias */}
+                <Button
+                  size="lg"
+                  className="w-full mt-4"
+                  disabled={!canContinue}
+                  onClick={() => {
+                    const href = buildWaLink(AppVars.phoneNumber, whatsappMessage);
+                    // Abrir WhatsApp en nueva pestaña
+                    window.open(href, '_blank', 'noopener,noreferrer');
+                    // Limpiar carrito y redirigir
+                    clearCart();
+                    navigate('/gracias');
+                  }}
+                >
+                  <ShoppingCart className="mr-2 h-5 w-5" />
+                  Continuar al pago por WhatsApp
+                </Button>
+
+
+                {!canContinue && (
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Completá nombre, ciudad y {deliveryMethod === 'envio' ? 'dirección' : 'método de entrega'} para continuar.
+                  </p>
+                )}
+
+                <Button variant="ghost" asChild className="w-full mt-2">
+                  <Link to="/catalogo">Seguir comprando</Link>
+                </Button>
               </div>
-            </div>
-          </form>
+            </aside>
+          </div>
         </div>
       </main>
       <Footer />

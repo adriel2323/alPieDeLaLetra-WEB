@@ -29,22 +29,10 @@ const ThankYou = () => {
                   <div>
                     <h3 className="font-semibold mb-2">¿Qué sigue?</h3>
                     <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li>✓ Recibirás un email de confirmación en los próximos minutos</li>
                       <li>✓ Comenzaremos la producción de tu agenda/cuaderno personalizado</li>
                       <li>✓ Te mantendremos informado sobre el estado de tu pedido</li>
                       <li>✓ Tiempo estimado de producción: 8-10 horas hábiles</li>
                     </ul>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <Mail className="h-6 w-6 text-primary mt-1 shrink-0" />
-                  <div>
-                    <h3 className="font-semibold mb-2">Email de Confirmación</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Enviamos todos los detalles de tu pedido a tu correo electrónico. 
-                      Si no lo recibís en 10 minutos, revisá tu carpeta de spam.
-                    </p>
                   </div>
                 </div>
 

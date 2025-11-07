@@ -42,7 +42,7 @@ export type InteriorType =
 export type CoverType = 'dura' | 'blanda';
 
 export interface Product {
-  id: number;
+  id: string;
   name: string;
   slug: string;
   category: ProductCategory;
@@ -61,11 +61,18 @@ export interface Product {
 }
 
 export interface CartItem {
-  product: Product;
+  product: {
+    id: string;
+    name: string;
+    basePrice: number;
+    // ...lo que ya tengas
+  };
   quantity: number;
-  selectedSize: ProductSize;
-  selectedInterior: InteriorType;
-  selectedCover: CoverType;
+  price: number; // unitario que guardás
+  // 🔹 Campos opcionales para personalización:
   personalization?: string;
-  price: number;
+  selectedModel?: string;            // <-- agregar
+  selectedSize?: ProductSize;        // <-- agregar (si lo guardás)
+  selectedInterior?: InteriorType;   // <-- agregar
+  selectedCover?: CoverType;         // <-- agregar
 }

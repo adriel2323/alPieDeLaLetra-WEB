@@ -97,7 +97,7 @@ export const modelAssets: ModelAssets =
 
 export const products: Product[] = [
   {
-    id: 1,
+    id: "1",
     name: "Agenda Semanal 2026",
     slug: "agenda-semanal-a5",
     category: "agendas",
@@ -126,7 +126,7 @@ export const products: Product[] = [
     images: modelAssets["agenda-semanal"]
   },
   {
-    id: 2,
+    id: "2",
     name: "Agenda 2 dias por hoja 2026",
     slug: "agenda-2-dias-por-hoja-a5",
     category: "agendas",
@@ -155,7 +155,7 @@ export const products: Product[] = [
     images: modelAssets["agenda-semanal"]
   },
   {
-    id: 3,
+    id: "3",
     name: "Agenda Universitaria 2026",
     slug: "agenda-universitaria",
     category: "agendas",
@@ -185,7 +185,7 @@ export const products: Product[] = [
     images: modelAssets["agenda-semanal"]
   },
   {
-    id: 4,
+    id: "4",
     name: "Agenda Docente Nivel Inicial",
     slug: "agenda-docente-nivel-inicial",
     category: "agendas docentes",
@@ -226,7 +226,7 @@ export const products: Product[] = [
     images: modelAssets["agenda-docente-secundario"]
   },
   {
-    id: 5,
+    id: "5",
     name: "Agenda Docente Nivel Primaria",
     slug: "agenda-docente-nivel-primario",
     category: "agendas docentes",
@@ -270,7 +270,7 @@ export const products: Product[] = [
     images: modelAssets["agenda-docente-secundario"]
   },
   {
-    id: 6,
+    id: "6",
     name: "Agenda Docente Nivel Secundario-Universitario",
     slug: "agenda-docente-nivel-secundario-universitario",
     category: "agendas docentes",
@@ -310,7 +310,7 @@ export const products: Product[] = [
     images: modelAssets["agenda-docente-secundario"]
   },
   {
-    id: 7,
+    id: "7",
     name: "Cuaderno con planner perpetuo",
     slug: "cuaderno-con-planner-perpetuo",
     category: "cuadernos",
@@ -334,7 +334,7 @@ export const products: Product[] = [
     images: modelAssets["planner-semanal-perpetuo"]
   },
   {
-    id: 8,
+    id: "8",
     name: "Cuaderno A4 tapa blanda interior rayado, cuadriculado, liso o puntillado",
     slug: "cuaderno-A4-tapa-blanda",
     category: "cuadernos",
@@ -356,7 +356,7 @@ export const products: Product[] = [
     images: modelAssets["planner-semanal-perpetuo"]
   },
   {
-    id: 9,
+    id: "9",
     name: "Cuaderno A5 tapa dura interior rayado, cuadriculado, liso o puntillado",
     slug: "cuaderno-A5-tapa-dura",
     category: "cuadernos",
@@ -378,7 +378,7 @@ export const products: Product[] = [
     images: modelAssets["planner-semanal-perpetuo"]
   },
   {
-    id: 10,
+    id: "10",
     name: "Cuaderno emprendedor",
     slug: "cuaderno-emprendedor",
     category: "cuadernos",
@@ -407,7 +407,7 @@ export const products: Product[] = [
     images: modelAssets["cuaderno-emprendedor"]
   },
   {
-    id: 11,
+    id: "11",
     name: "Cuaderno de pedidos",
     slug: "cuaderno-de-pedidos",
     category: "cuadernos",
@@ -428,7 +428,7 @@ export const products: Product[] = [
     images: modelAssets["cuaderno-emprendedor"]
   },
   {
-    id: 12,
+    id: "12",
     name: "Planner semanal perpetuo con horarios",
     slug: "planner-semanal-perpetuo-con-horarios",
     category: "agendas",
@@ -452,7 +452,7 @@ export const products: Product[] = [
     images: modelAssets["planner-semanal-perpetuo"]
   },
   {
-    id: 13,
+    id: "13",
     name: "Recetario",
     slug: "recetario",
     category: "especiales",
@@ -474,7 +474,7 @@ export const products: Product[] = [
     images: modelAssets["recetarios"]
   },
   {
-    id: 14,
+    id: "14",
     name: "Cuaderno docente secundaria perpetuo",
     slug: "cuaderno-docente-secundaria-perpetuo",
     category: "cuadernos",
@@ -497,6 +497,7 @@ export const products: Product[] = [
     images: modelAssets["agenda-docente-secundario"]
   }
 ];
+
 // export const products: Product[] = [
 //   {
 //     id: '1',
