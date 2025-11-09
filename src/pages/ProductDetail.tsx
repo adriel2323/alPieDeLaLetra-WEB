@@ -4,7 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
-import { getProductBySlug } from '@/data/products';
+import { getProductBySlug, productoImagenes } from '@/data/products';
 import { modeloOptions } from '@/data/options';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -597,13 +597,7 @@ Cantidad: ${quantity}
                   "
                   aria-label="Ejemplos de personalización"
                 >
-                  {[
-                    '/img/ejs/nombre-foil-like.jpg',
-                    '/img/ejs/frase-minimal.jpg',
-                    '/img/ejs/foto-mascota.jpg',
-                    '/img/ejs/trama-terrazzo.jpg',
-                    '/img/ejs/logo-emprendimiento.jpg',
-                  ].map((src, i) => (
+                  {productoImagenes["personalizados"].map((src, i) => (
                     <div
                       key={i}
                       className="snap-center flex-none w-32 h-32 sm:w-36 sm:h-36 rounded-xl overflow-hidden ring-1 ring-slate-200 bg-white"
