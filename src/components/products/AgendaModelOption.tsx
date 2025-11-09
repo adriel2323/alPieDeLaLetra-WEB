@@ -65,40 +65,53 @@ export function AgendaModelSelector({
       <div
         role="radiogroup"
         aria-labelledby={groupId}
-        className="flex flex-row gap-3"
+        className={clsx("w-full max-w-full min-w-0",
+          "flex flex-row flex-nowrap items-stretch gap-3",
+          "overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth",
+          // estilizado de scrollbar
+          "[scrollbar-width:thin] [scrollbar-color:theme(colors.slate.400)_transparent]",
+          "[&::-webkit-scrollbar]:h-2",
+          "[&::-webkit-scrollbar-track]:bg-transparent",
+          "[&::-webkit-scrollbar-thumb]:bg-slate-400/60 hover:[&::-webkit-scrollbar-thumb]:bg-slate-500/70",
+          "[&::-webkit-scrollbar-thumb]:rounded-full",
+          // padding lateral suave y evita recortes
+          "px-2 py-2")}
         onKeyDown={handleKeyDown}
       >
         {options.map((opt, idx) => {
           const checked = internal === opt.id;
           return (
-            <button
-              key={opt.id}
-              ref={el => (refs.current[idx] = el)}
-              role="radio"
-              aria-checked={checked}
-              aria-label={opt.id}
-              onClick={() => setSelected(opt.id)}
-              className={clsx(
-                "relative aspect-square w-full rounded-xl overflow-hidden",
-                "ring-3 ring-primary/40",
-                "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary",
-                checked
-                  ? "ring-4 ring-primary ring-offset-2"
-                  : "hover:ring-2 hover:ring-muted-foreground/40"
-              )}
-              tabIndex={checked || (internal == null && idx === 0) ? 0 : -1}
-            >
-              <img
-                src={opt.image}
-                alt={`Modelo ${opt.id}`}
-                className="h-full w-full object-cover"
-                loading="lazy"
-              />
-              {/* Check visual */}
-              {checked && (
-                <span className="absolute inset-0 pointer-events-none bg-black/0" />
-              )}
-            </button>
+            <div key={opt.id} className="snap-start flex-none">
+              <button
+                key={opt.id}
+                ref={el => (refs.current[idx] = el)}
+                role="radio"
+                aria-checked={checked}
+                aria-label={opt.id}
+                onClick={() => setSelected(opt.id)}
+                className={clsx(
+                  "group relative overflow-hidden rounded-xl",
+                    "w-28 sm:w-32 md:w-36 aspect-[3/4]", // tamaño fijo y apreciable
+                    "bg-white ring-1 ring-slate-300/60",
+                  checked
+                    ? "ring-4 ring-primary ring-offset-2"
+                    : "hover:ring-2 hover:ring-slate-400/60",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary"
+                )}
+                tabIndex={checked || (internal == null && idx === 0) ? 0 : -1}
+              >
+                  <img
+                    src={opt.image}
+                    alt={`Modelo ${opt.id}`}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                  {/* Check visual */}
+                  {checked && (
+                    <span className="absolute inset-0 pointer-events-none bg-black/0" />
+                  )}
+              </button>
+          </div>
           );
         })}
         

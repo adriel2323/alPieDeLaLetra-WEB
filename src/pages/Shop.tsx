@@ -184,47 +184,7 @@ const Shop = () => {
               </Select>
             </div>
 
-            {/* Datos del comprador (necesarios para el mensaje final) */}
-            <div className="mt-6 grid gap-4 md:grid-cols-2">
-              <div className="space-y-2">
-                <Label htmlFor="buyerName">Nombre y apellido</Label>
-                <Input id="buyerName" value={buyerName} onChange={(e) => setBuyerName(e.target.value)} placeholder="Ej.: María López" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="buyerCity">Ciudad / Localidad</Label>
-                <Input id="buyerCity" value={buyerCity} onChange={(e) => setBuyerCity(e.target.value)} placeholder="Ej.: San Nicolás de los Arroyos" />
-              </div>
-
-              <div className="space-y-2">
-                <Label>Entrega</Label>
-                <RadioGroup
-                  value={deliveryMethod}
-                  onValueChange={(v) => setDeliveryMethod(v as 'retiro' | 'envio')}
-                  className="flex gap-6"
-                >
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="retiro" id="retiro" />
-                    <Label htmlFor="retiro">Retiro en punto de entrega</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="envio" id="envio" />
-                    <Label htmlFor="envio">Envío a domicilio</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-
-              {deliveryMethod === 'envio' && (
-                <div className="space-y-2">
-                  <Label htmlFor="deliveryAddress">Dirección (si pedís envío)</Label>
-                  <Input id="deliveryAddress" value={deliveryAddress} onChange={(e) => setDeliveryAddress(e.target.value)} placeholder="Calle, número, barrio, referencias" />
-                </div>
-              )}
-
-              <div className="md:col-span-2 space-y-2">
-                <Label htmlFor="buyerNotes">Notas (opcional)</Label>
-                <Textarea id="buyerNotes" value={buyerNotes} onChange={(e) => setBuyerNotes(e.target.value)} placeholder="Aclaraciones, horarios para recibir, color favorito, etc." />
-              </div>
-            </div>
+            
 
             <div className="mt-4">
               <p className="text-sm text-muted-foreground">

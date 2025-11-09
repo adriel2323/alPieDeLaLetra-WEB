@@ -12,24 +12,23 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { useCart } from '@/hooks/use-cart';
 import { toast } from 'sonner';
-import { ArrowLeft, ShoppingCart, Package, Clock, CheckCircle, Wand2, Maximize2  } from 'lucide-react';
-import { ProductSize, InteriorType, CoverType,Product } from '@/types/product';
+import {
+  ArrowLeft, ShoppingCart, Package, Clock, CheckCircle, Wand2, Maximize2,
+  LayoutGrid, Sparkles
+} from 'lucide-react';
+import { ProductSize, InteriorType, CoverType, Product } from '@/types/product';
 import AppVars from '@/data/data';
 
-// ✅ paths corregidos a "product"
-import { AgendaModelSelector, AgendaModelOption } from '@/components/products/AgendaModelOption';
+// ⚠️ Asegurate del path real:
+import { AgendaModelSelector } from '@/components/products/AgendaModelOption';
 import ProductImageGallery from '@/components/products/ProductImageGallery';
 import FullscreenModelDialog from '@/components/products/FullscreenModelDialog';
 
+// —— WhatsApp ——————————————————————————————————————————————
+const WHATSAPP_NUMBER = AppVars.phoneNumber;
+const buildWaLink = (message: string) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-// —— Configuración WhatsApp ————————————————————————————————
-const WHATSAPP_NUMBER = AppVars.phoneNumber; // ej.: 549336XXXXXXX
-
-function buildWaLink(message: string) {
-  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
-}
-
-// —— Chips de personalización ——————————————————————————————
 const PERSONALIZATION_STYLES = [
   { id: 'nombre', label: 'Nombre/Iniciales' },
   { id: 'frase', label: 'Frase/Versículo' },
@@ -39,62 +38,57 @@ const PERSONALIZATION_STYLES = [
 ] as const;
 type PersonalizationStyleId = typeof PERSONALIZATION_STYLES[number]['id'];
 
+type Mode = 'ready' | 'custom'; // ← control segmentado
+
 const ProductDetail = () => {
   const { slug } = useParams();
   const product = getProductBySlug(slug || '');
   const { addItem } = useCart();
 
-  // --- Hooks arriba (orden estable)
+  // ——— Estado base
   const [selectedSize, setSelectedSize] = useState<ProductSize>(product?.sizes?.[0] || 'A5');
   const [selectedInterior, setSelectedInterior] = useState<InteriorType>(product?.interiors?.[0] || 'semanal');
   const [selectedCover, setSelectedCover] = useState<CoverType>(product?.coverTypes?.[0] || 'dura');
   const [personalization, setPersonalization] = useState('');
   const [quantity, setQuantity] = useState(1);
 
-  const [selectedModel, setSelectedModel] = useState<string | null>(modeloOptions[0]?.modelo ?? null);
+  // ——— Modo (segmented control)
+  const [mode, setMode] = useState<Mode>('ready');
 
-  const [styleId, setStyleId] = useState<PersonalizationStyleId>('nombre');
+  // ——— Modelo por ID (unificado)
+  const [selectedModelId, setSelectedModelId] = useState<string>(modeloOptions[0]?.id ?? '');
+  const selectedModelDef = useMemo(
+    () => modeloOptions.find(m => m.id === selectedModelId),
+    [selectedModelId]
+  );
+  const selectedModelLabel = selectedModelDef?.modelo ?? 'a confirmar';
   const [fsImage, setFsImage] = useState<string | null>(null);
 
-  const collections = Array.from(
-  new Set(modeloOptions.map(m => m.collection ?? 'otras'))
-);
-
-  const [selectedCollection, setSelectedCollection] = useState<string>(collections[0] ?? 'todas');
-
-  const filteredModels = modeloOptions.filter(m =>
-    !selectedCollection || selectedCollection === 'todas'
-      ? true
-      : m.collection === selectedCollection
+  // ——— Colecciones
+  const collections = useMemo(
+    () => Array.from(new Set(modeloOptions.map(m => m.collection ?? 'otras'))),
+    []
   );
+  const [selectedCollection, setSelectedCollection] = useState<string>(collections[0] ?? 'todas');
+  const filteredModels = useMemo(
+    () =>
+      modeloOptions.filter(m =>
+        !selectedCollection || selectedCollection === 'todas' ? true : m.collection === selectedCollection
+      ),
+    [selectedCollection]
+  );
+  const todasCollections = modeloOptions.filter(m => m.collection === 'Edicion-2026');
 
-  const selectedModelImage = useMemo(() => {
-  const byModel = modeloOptions.find(m => m.modelo === selectedModel)?.image;
-  return byModel ?? product?.images?.[0] ?? '';
-}, [ selectedModel, product?.images]);
 
-  const whatsappPersonalizationMessage = useMemo(() => {
-    const styleLabel = PERSONALIZATION_STYLES.find(s => s.id === styleId)?.label ?? 'A definir';
-    const name = product?.name ?? 'Producto';
-    return [
-      `¡Hola! Quiero personalizar este producto:`,
-      ``,
-      `*${name}*`,
-      `Modelo: ${selectedModel ?? 'a confirmar'}`,
-      `Tamaño: ${selectedSize} | Interior: ${selectedInterior} | Tapa: ${selectedCover}`,
-      personalization ? `Texto (opcional): “${personalization}”` : `Texto: a definir`,
-      ``,
-      `Estilo de personalización elegido: *${styleLabel}*`,
-      `¿Podemos ver opciones? Si hace falta, te envío imagen/referencia acá mismo.`,
-    ].join('\n');
-  }, [product?.name, selectedModel, selectedSize, selectedInterior, selectedCover, personalization, styleId]);
+  const selectedModelImage = selectedModelDef?.image ?? product?.images?.[0] ?? '';
 
-  const whatsappMessage = useMemo(() => {
+  // ——— Mensajes de WhatsApp
+  const whatsappReadyMessage = useMemo(() => {
     const name = product?.name ?? 'Producto';
     return `Hola! Me interesa este producto:
     
 *${name}*
-Modelo: ${selectedModel ?? 'a confirmar'}
+Modelo: ${selectedModelLabel}
 Tamaño: ${selectedSize}
 Interior: ${selectedInterior}
 Tapa: ${selectedCover}
@@ -102,7 +96,26 @@ ${personalization ? `Personalización: "${personalization}"` : ''}
 Cantidad: ${quantity}
 
 ¿Está disponible? ✨`;
-  }, [product?.name, selectedModel, selectedSize, selectedInterior, selectedCover, personalization, quantity]);
+  }, [product?.name, selectedModelLabel, selectedSize, selectedInterior, selectedCover, personalization, quantity]);
+
+  const [styleId, setStyleId] = useState<PersonalizationStyleId>('nombre');
+  const whatsappPersonalizationMessage = useMemo(() => {
+    const styleLabel = PERSONALIZATION_STYLES.find(s => s.id === styleId)?.label ?? 'A definir';
+    const name = product?.name ?? 'Producto';
+    return [
+      `¡Hola! Quiero personalizar este producto:`,
+      ``,
+      `*${name}*`,
+      `Modelo base: ${selectedModelLabel}`,
+      `Tamaño: ${selectedSize} | Interior: ${selectedInterior} | Tapa: ${selectedCover}`,
+      personalization ? `Texto (opcional): “${personalization}”` : `Texto: a definir`,
+      ``,
+      `Estilo de personalización elegido: *${styleLabel}*`,
+      `¿Podemos ver opciones? Si hace falta, te envío imagen/referencia acá mismo.`,
+    ].join('\n');
+  }, [product?.name, selectedModelLabel, selectedSize, selectedInterior, selectedCover, personalization, styleId]);
+
+  const modeSpecificMessage = mode === 'custom' ? whatsappPersonalizationMessage : whatsappReadyMessage;
 
   const formattedPrice = useMemo(() => {
     const base = product?.basePrice ?? 0;
@@ -113,36 +126,48 @@ Cantidad: ${quantity}
     }).format(base * quantity);
   }, [product?.basePrice, quantity]);
 
+  // ——— Add to cart
   const handleAddToCart = () => {
-  if (!product) return;
+    if (!product) return;
 
-  // Pasá solo lo que CartItem.product necesita (ajustá las keys a tu CartItem)
-  const cartProduct: Pick<Product, 'id' | 'name' | 'basePrice' | 'images'> = {
-    id: product.id,
-    name: product.name,
-    basePrice: product.basePrice,
-    images: product.images,
+    const cartProduct: Pick<Product, 'id' | 'name' | 'basePrice' | 'images'> = {
+      id: product.id,
+      name: product.name,
+      basePrice: product.basePrice,
+      images: product.images,
+    };
+
+    addItem({
+      product: cartProduct,
+      quantity,
+      price: product.basePrice,
+      selectedSize,
+      selectedInterior,
+      selectedCover,
+      personalization: personalization || undefined,
+      selectedModel: selectedModelLabel, // legible en WA/checkout
+    });
+
+    toast.success('¡Producto agregado al carrito!', {
+      description: `${product.name} ${personalization ? `- "${personalization}"` : ''}`,
+    });
   };
 
-  addItem({
-    product: cartProduct,
-    quantity,
-    price: product.basePrice,
-    selectedSize,
-    selectedInterior,
-    selectedCover,
-    personalization: personalization || undefined,
-    selectedModel: selectedModel ?? undefined, // evita null si tu tipo es string | undefined
-  });
-
-  toast.success('¡Producto agregado al carrito!', {
-    description: `${product.name} ${personalization ? `- "${personalization}"` : ''}`,
-  });
-};
-  console.log('selectedModelImage', selectedModel);
+  if (!product) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <h1 className="text-4xl font-bold">Producto no encontrado</h1>
+          <Button asChild>
+            <Link to="/catalogo">Volver al catálogo</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen overflow-x-clip"> {/* ✅ bloquea scroll lateral fantasma */}
+    <div className="min-h-screen overflow-x-clip">
       <Header />
       <main className="py-8 w-full max-w-full">
         <div className="container px-4">
@@ -179,193 +204,8 @@ Cantidad: ${quantity}
                 <p className="text-muted-foreground mt-3 break-words">{product.description}</p>
               </div>
 
-              {/* Personalización */}
-              <div className="space-y-4 rounded-2xl border p-4 sm:p-5 w-full max-w-full">
-                <div className="flex items-center gap-2">
-                  <Wand2 className="h-5 w-5 text-primary" />
-                  <h3 className="font-semibold text-lg">Personalizá tu agenda</h3>
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  Portada o interior: <strong>foto</strong>, <strong>frase</strong>, <strong>nombre</strong> o <strong>trama</strong>. Lo definimos por WhatsApp con <em>boceto previo</em>.
-                </p>
-
-                {/* Chips (radiogroup) */}
-                <div role="radiogroup" aria-label="Estilos de personalización" className="flex flex-wrap gap-2">
-                  {PERSONALIZATION_STYLES.map((s) => {
-                    const selected = styleId === s.id;
-                    return (
-                      <button
-                        key={s.id}
-                        role="radio"
-                        aria-checked={selected}
-                        onClick={() => setStyleId(s.id)}
-                        className={[
-                          "px-3 py-1.5 rounded-full text-sm transition-colors",
-                          "ring-1 ring-slate-300/60",
-                          selected ? "bg-primary text-primary-foreground ring-primary"
-                                   : "bg-white hover:bg-slate-50"
-                        ].join(" ")}
-                      >
-                        {s.label}
-                      </button>
-                    );
-                  })}
-                </div>
-
-                {/* Texto opcional */}
-                <div className="space-y-2">
-                  <Label htmlFor="personalization">Texto (opcional)</Label>
-                  <Input
-                    id="personalization"
-                    placeholder='Ej.: "María" o "¡Vamos por más!"'
-                    value={personalization}
-                    onChange={(e) => setPersonalization(e.target.value)}
-                    maxLength={40}
-                  />
-                  <p className="text-xs text-muted-foreground">
-                    Si elegís “Foto/Logo”, te pediremos el archivo por WhatsApp.
-                  </p>
-                </div>
-
-                {/* CTAs */}
-                <div className="grid sm:grid-cols-2 gap-3">
-                  <Button asChild className="w-full">
-                    <a href={buildWaLink(whatsappPersonalizationMessage)} target="_blank" rel="noopener noreferrer">
-                      Definir personalización por WhatsApp
-                    </a>
-                  </Button>
-                  <Button asChild variant="outline" className="w-full">
-                    <a href="#inspirate">Ver ideas e inspiración</a>
-                  </Button>
-                </div>
-
-                <ul className="text-xs text-muted-foreground space-y-1">
-                  <li>• Boceto incluido (1 revisión). Producción: 8–10 h. Entrega rápida 24–48 h (con recargo).</li>
-                  <li>• Para fotos: luz natural y al menos ~1500 px del lado más corto.</li>
-                </ul>
-              </div>
-
-              {/* Opciones básicas */}
-              <div className="space-y-6 border-y py-6 w-full max-w-full">
-                <div className="space-y-3">
-                  <Label>Modelo de Agenda</Label>
-
-                  {/* filtros de colección */}
-                  <div className="flex flex-wrap gap-2">
-                    {['todas', ...collections].map((col) => {
-                      const isActive = selectedCollection === col;
-                      return (
-                        <button
-                          key={col}
-                          type="button"
-                          onClick={() => setSelectedCollection(col)}
-                          className={[
-                            "px-3 py-1.5 rounded-full text-sm transition-colors",
-                            isActive
-                              ? "bg-primary text-primary-foreground"
-                              : "bg-slate-100 text-slate-800 hover:bg-slate-200"
-                          ].join(" ")}
-                        >
-                          {col === 'todas' ? 'Todas' : col.charAt(0).toUpperCase() + col.slice(1)}
-                        </button>
-                      );
-                    })}
-                  </div>
-
-                  {/* tu selector actual pero con opciones filtradas */}
-                  <AgendaModelSelector
-                    options={filteredModels}
-                    value={selectedModel}
-                    onChange={setSelectedModel}
-                  />
-                </div>
-
-                {/* Botón para pantalla completa del modelo seleccionado */}
-                <FullscreenModelDialog
-                  src={fsImage || selectedModelImage}
-                  alt={product.name}
-                  trigger={
-                    <Button variant="outline" className="w-full">
-                      <Maximize2 className="w-4 h-4 mr-2" />
-                      Ver en pantalla completa
-                    </Button>
-                  }
-                />
-
-
-
-                <div className="space-y-2">
-                  <Label>Tamaño</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {product.sizes.map((size) => (
-                      <Button
-                        key={size}
-                        variant={selectedSize === size ? 'default' : 'outline'}
-                        onClick={() => setSelectedSize(size)}
-                      >
-                        {size}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Tipo de Interior</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {product.interiors.map((interior) => (
-                      <Button
-                        key={interior}
-                        variant={selectedInterior === interior ? 'default' : 'outline'}
-                        onClick={() => setSelectedInterior(interior)}
-                        className="capitalize"
-                      >
-                        {interior}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label>Tipo de Tapa</Label>
-                  <div className="flex flex-wrap gap-2">
-                    {product.coverTypes.map((cover) => (
-                      <Button
-                        key={cover}
-                        variant={selectedCover === cover ? 'default' : 'outline'}
-                        onClick={() => setSelectedCover(cover)}
-                        className="capitalize"
-                      >
-                        Tapa {cover}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="quantity">Cantidad</Label>
-                  <Input
-                    id="quantity"
-                    type="number"
-                    min="1"
-                    max="10"
-                    value={quantity}
-                    onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
-                    className="w-24"
-                  />
-                </div>
-              </div>
-
-              {/* Acciones */}
-              <div className="space-y-4 w-full max-w-full">
-                <Button size="lg" className="w-full" onClick={handleAddToCart}>
-                  <ShoppingCart className="mr-2 h-5 w-5" />
-                  Agregar al Carrito
-                </Button>
-                <WhatsAppButton message={whatsappMessage} className="w-full" />
-              </div>
-
-              {/* Detalles */}
-              <div className="space-y-6 pt-6 border-t w-full max-w-full">
+              {/* Detalles / incluye / tiempos */}
+              <div className="space-y-6 lg:space-y-0 pt-6 grid grid-cols-1 lg:grid-cols-2 border-t w-full max-w-full">
                 <div>
                   <h3 className="font-semibold mb-3 flex items-center gap-2">
                     <Package className="h-5 w-5 text-primary" />
@@ -391,7 +231,7 @@ Cantidad: ${quantity}
                 </div>
 
                 <div>
-                  <h3 className="font-semibold mb-2 flex items-center gap-2">
+                  <h3 className="font-semibold mb-2 lg:mt-6 flex items-center gap-2">
                     <Clock className="h-5 w-5 text-primary" />
                     Tiempo de Producción
                   </h3>
@@ -401,6 +241,342 @@ Cantidad: ${quantity}
                   </p>
                 </div>
               </div>
+
+              {/* ——— Segmented Control: Modelos listos / Personalizar ——— */}
+              <div className="w-full">
+                <div
+                  className="inline-flex rounded-xl border bg-white p-1 shadow-sm"
+                  role="tablist"
+                  aria-label="Modo de compra"
+                >
+                  <button
+                    role="tab"
+                    aria-selected={mode === 'ready'}
+                    onClick={() => setMode('ready')}
+                    className={[
+                      "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition",
+                      mode === 'ready' ? "bg-primary text-primary-foreground shadow"
+                                       : "text-slate-700 hover:bg-slate-50"
+                    ].join(" ")}
+                  >
+                    <LayoutGrid className="h-4 w-4" />
+                    Modelos listos
+                  </button>
+                  <button
+                    role="tab"
+                    aria-selected={mode === 'custom'}
+                    onClick={() => setMode('custom')}
+                    className={[
+                      "inline-flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition",
+                      mode === 'custom' ? "bg-primary text-primary-foreground shadow"
+                                        : "text-slate-700 hover:bg-slate-50"
+                    ].join(" ")}
+                  >
+                    <Sparkles className="h-4 w-4" />
+                    Personalizar
+                  </button>
+                </div>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  ¿Querés nombre, foto o frase? Tocá <strong>Personalizar</strong>. Si preferís elegir un diseño ya listo, quedate en <strong>Modelos listos</strong>. {/* microcopy CTA para los labels */}
+                </p>
+              </div>
+
+              {/* ——— Vista: Modelos listos ——— */}
+              {mode === 'ready' && (
+                <div className="space-y-6 border-y py-6 w-full max-w-full">
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <Label>Modelo de Agenda</Label>
+                      <Button
+                        variant="link"
+                        className="px-0 text-xs"
+                        onClick={() => setMode('custom')}
+                      >
+                        ¿Querés personalizar? Ver opciones →
+                      </Button>
+                    </div>
+
+                    {/* Filtros de colección */}
+                    <div className="flex flex-wrap gap-2">
+                      {['todas', ...collections].map((col) => {
+                        const isActive = selectedCollection === col;
+                        return (
+                          <button
+                            key={col}
+                            type="button"
+                            onClick={() => setSelectedCollection(col)}
+                            className={[
+                              "px-3 py-1.5 rounded-full text-sm transition-colors",
+                              isActive
+                                ? "bg-primary text-primary-foreground"
+                                : "bg-slate-100 text-slate-800 hover:bg-slate-200"
+                            ].join(" ")}
+                          >
+                            {col === 'todas' ? 'Todas' : col.charAt(0).toUpperCase() + col.slice(1)}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <AgendaModelSelector
+                      options={filteredModels}
+                      value={selectedModelId}
+                      onChange={setSelectedModelId}
+                    />
+                  </div>
+
+                  {/* Pantalla completa del modelo seleccionado */}
+                  <FullscreenModelDialog
+                    src={fsImage || selectedModelImage}
+                    alt={product.name}
+                    trigger={
+                      <Button variant="outline" className="w-full">
+                        <Maximize2 className="w-4 h-4 mr-2" />
+                        Ver modelo en pantalla completa
+                      </Button>
+                    }
+                  />
+
+                  {/* Tamaño / Interior / Tapa / Cantidad */}
+                  <div>
+                    <div className="space-y-2">
+                      <Label>Tamaño</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {product.sizes.map((size) => (
+                          <Button
+                            key={size}
+                            variant={selectedSize === size ? 'default' : 'outline'}
+                            onClick={() => setSelectedSize(size)}
+                          >
+                            {size}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Tipo de Interior</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {product.interiors.map((interior) => (
+                          <Button
+                            key={interior}
+                            variant={selectedInterior === interior ? 'default' : 'outline'}
+                            onClick={() => setSelectedInterior(interior)}
+                            className="capitalize"
+                          >
+                            {interior}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Tipo de Tapa</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {product.coverTypes.map((cover) => (
+                          <Button
+                            key={cover}
+                            variant={selectedCover === cover ? 'default' : 'outline'}
+                            onClick={() => setSelectedCover(cover)}
+                            className="capitalize"
+                          >
+                            Tapa {cover}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="quantity">Cantidad</Label>
+                      <Input
+                        id="quantity"
+                        type="number"
+                        min="1"
+                        max="10"
+                        value={quantity}
+                        onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+                        className="w-24"
+                      />
+                    </div>
+                  </div>
+
+                  {/* CTAs modo ready */}
+                  <div className="space-y-3">
+                    <Button size="lg" className="w-full" onClick={handleAddToCart}>
+                      <ShoppingCart className="mr-2 h-5 w-5" />
+                      Agregar al Carrito
+                    </Button>
+                    <Button asChild variant="outline" className="w-full">
+                      <a href={buildWaLink(whatsappReadyMessage)} target="_blank" rel="noopener noreferrer">
+                        Consultar por WhatsApp
+                      </a>
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              {/* ——— Vista: Personalizar ——— */}
+              {mode === 'custom' && (
+                <div className="space-y-6 border-y py-6 w-full max-w-full">
+                  <div className="space-y-4 rounded-2xl border p-4 sm:p-5">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Wand2 className="h-5 w-5 text-primary" />
+                        <h3 className="font-semibold text-lg">Personalizá tu agenda</h3>
+                      </div>
+                      <Button
+                        variant="link"
+                        className="px-0 text-xs"
+                        onClick={() => setMode('ready')}
+                      >
+                        Ver modelos listos →
+                      </Button>
+                    </div>
+                    <p className="text-sm text-muted-foreground">
+                      Portada o interior: <strong>foto</strong>, <strong>frase</strong>, <strong>nombre</strong> o <strong>trama</strong>. Lo definimos por WhatsApp con <em>boceto previo</em>.
+                    </p>
+
+                    {/* Estilo (chips) */}
+                    <div role="radiogroup" aria-label="Estilos de personalización" className="flex flex-wrap gap-2">
+                      {PERSONALIZATION_STYLES.map((s) => {
+                        const selected = styleId === s.id;
+                        return (
+                          <button
+                            key={s.id}
+                            role="radio"
+                            aria-checked={selected}
+                            onClick={() => setStyleId(s.id)}
+                            className={[
+                              "px-3 py-1.5 rounded-full text-sm transition-colors",
+                              "ring-1 ring-slate-300/60",
+                              selected ? "bg-primary text-primary-foreground ring-primary"
+                                       : "bg-white hover:bg-slate-50"
+                            ].join(" ")}
+                          >
+                            {s.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    {/* Texto opcional */}
+                    <div className="space-y-2">
+                      <Label htmlFor="personalization">Texto (opcional)</Label>
+                      <Input
+                        id="personalization"
+                        placeholder='Ej.: "María" o "¡Vamos por más!"'
+                        value={personalization}
+                        onChange={(e) => setPersonalization(e.target.value)}
+                        maxLength={40}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Si elegís “Foto/Logo”, te pediremos el archivo por WhatsApp.
+                      </p>
+                    </div>
+
+                    {/* CTA principal custom */}
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      <Button asChild className="w-full">
+                        <a href={buildWaLink(whatsappPersonalizationMessage)} target="_blank" rel="noopener noreferrer">
+                          Definir personalización por WhatsApp
+                        </a>
+                      </Button>
+                      <Button asChild variant="outline" className="w-full">
+                        <a href="#inspirate">Ver ideas e inspiración</a>
+                      </Button>
+                    </div>
+
+                    {/* Tips */}
+                    <ul className="text-xs text-muted-foreground space-y-1">
+                      <li>• Boceto incluido (1 revisión). Producción: 8–10 h. Entrega rápida 24–48 h (con recargo).</li>
+                      <li>• Para fotos: luz natural y al menos ~1500 px del lado más corto.</li>
+                    </ul>
+                  </div>
+
+                  {/* Base (modelo / tamaño / interior / tapa) — se mantiene para custom */}
+                  <div className="space-y-3">
+                    <Label>Elegí una base para personalizar</Label>
+                    <AgendaModelSelector
+                      options={todasCollections}
+                      value={selectedModelId}
+                      onChange={setSelectedModelId}
+                    />
+                    <FullscreenModelDialog
+                      src={fsImage || selectedModelImage}
+                      alt={product.name}
+                      trigger={
+                        <Button variant="outline" className="w-full">
+                          <Maximize2 className="w-4 h-4 mr-2" />
+                          Ver base en pantalla completa
+                        </Button>
+                      }
+                    />
+                  </div>
+
+                  <div className="grid sm:grid-cols-3 gap-4">
+                    <div className="space-y-2">
+                      <Label>Tamaño</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {product.sizes.map((size) => (
+                          <Button
+                            key={size}
+                            variant={selectedSize === size ? 'default' : 'outline'}
+                            onClick={() => setSelectedSize(size)}
+                          >
+                            {size}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Interior</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {product.interiors.map((interior) => (
+                          <Button
+                            key={interior}
+                            variant={selectedInterior === interior ? 'default' : 'outline'}
+                            onClick={() => setSelectedInterior(interior)}
+                            className="capitalize"
+                          >
+                            {interior}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Tapa</Label>
+                      <div className="flex flex-wrap gap-2">
+                        {product.coverTypes.map((cover) => (
+                          <Button
+                            key={cover}
+                            variant={selectedCover === cover ? 'default' : 'outline'}
+                            onClick={() => setSelectedCover(cover)}
+                            className="capitalize"
+                          >
+                            Tapa {cover}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* CTA secundaria en custom */}
+                  <div className="space-y-3">
+                    <Button asChild variant="outline" className="w-full">
+                      <a href={buildWaLink(whatsappPersonalizationMessage)} target="_blank" rel="noopener noreferrer">
+                        Enviar detalles por WhatsApp
+                      </a>
+                    </Button>
+                    <Button className="w-full" onClick={() => setMode('ready')}>
+                      Ver modelos listos
+                    </Button>
+                  </div>
+                </div>
+              )}
+
+              
 
               {/* Inspirate */}
               <div id="inspirate" className="space-y-3 w-full max-w-full">
@@ -445,7 +621,9 @@ Cantidad: ${quantity}
         </div>
       </main>
       <Footer />
-      <WhatsAppButton variant="floating" />
+
+      {/* Botón flotante con mensaje acorde al modo activo */}
+      <WhatsAppButton message={modeSpecificMessage} variant="floating" />
     </div>
   );
 };

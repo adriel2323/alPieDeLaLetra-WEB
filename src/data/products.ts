@@ -4,94 +4,256 @@ import cuadernoUniversitario from '@/assets/cuaderno-universitario.jpg';
 import recetario from '@/assets/recetario.jpg';
 import libreta from '@/assets/libreta.jpg';
 
-export const modelAssets: ModelAssets = 
+export const productoImagenes: ModelAssets = 
 {
+  "agenda-universitaria-2026": [
+    "/src/assets/productos/agenda-universitaria-2026_0001.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0004.mp4",
+    "/src/assets/productos/agenda-universitaria-2026_0002.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0003.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0005.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0006.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0007.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0008.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0009.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0010.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0011.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0012.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0013.webp",
+  ],
+  "agenda-2-dias-por-hoja": [
+    "/src/assets/productos/agenda-2-dias-por-hoja_0001.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0002.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0003.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0004.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0005.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0006.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0007.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0008.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0009.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0010.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0011.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0012.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0013.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0014.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0015.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0016.mp3",
+  ],
+  "agenda-docente-inicial": [
+    "/src/assets/productos/agenda-docente-inicial_0001.webp",
+    "/src/assets/productos/agenda-docente-inicial_0002.mp4",
+    "/src/assets/productos/agenda-docente-inicial_0003.webp",
+    "/src/assets/productos/agenda-docente-inicial_0004.webp",
+    "/src/assets/productos/agenda-docente-inicial_0005.webp",
+    "/src/assets/productos/agenda-docente-inicial_0006.webp",
+    "/src/assets/productos/agenda-docente-inicial_0007.webp",
+    "/src/assets/productos/agenda-docente-inicial_0008.webp",
+    "/src/assets/productos/agenda-docente-inicial_0009.webp",
+    "/src/assets/productos/agenda-docente-inicial_0010.webp",
+    "/src/assets/productos/agenda-docente-inicial_0011.webp",
+    "/src/assets/productos/agenda-docente-inicial_0012.webp",
+    "/src/assets/productos/agenda-docente-inicial_0013.webp",
+    "/src/assets/productos/agenda-docente-inicial_0014.webp",
+    "/src/assets/productos/agenda-docente-inicial_0015.webp",
+    "/src/assets/productos/agenda-docente-inicial_0016.webp",
+    "/src/assets/productos/agenda-docente-inicial_0017.webp",
+    "/src/assets/productos/agenda-docente-inicial_0018.webp"
+  ],
+  "agenda-docente-primario": [
+    "/src/assets/productos/agenda-docente-primario_0001.webp",
+    "/src/assets/productos/agenda-docente-primario_0015.mp4",
+    "/src/assets/productos/agenda-docente-primario_0002.webp",
+    "/src/assets/productos/agenda-docente-primario_0003.webp",
+    "/src/assets/productos/agenda-docente-primario_0004.webp",
+    "/src/assets/productos/agenda-docente-primario_0005.webp",
+    "/src/assets/productos/agenda-docente-primario_0006.webp",
+    "/src/assets/productos/agenda-docente-primario_0007.webp",
+    "/src/assets/productos/agenda-docente-primario_0008.webp",
+    "/src/assets/productos/agenda-docente-primario_0009.webp",
+    "/src/assets/productos/agenda-docente-primario_0010.webp",
+    "/src/assets/productos/agenda-docente-primario_0011.webp",
+    "/src/assets/productos/agenda-docente-primario_0012.webp",
+    "/src/assets/productos/agenda-docente-primario_0013.webp",
+    "/src/assets/productos/agenda-docente-primario_0014.webp",
+  ],
   "agenda-docente-secundario": [
-    "/src/assets/contenido/agenda-docente-secundario_0001.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0002.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0003.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0004.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0005.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0006.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0007.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0008.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0009.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0010.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0011.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0012.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0013.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0014.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0015.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0016.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0017.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0018.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0019.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0020.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0021.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0022.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0023.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0024.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0025.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0026.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0027.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0028.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0029.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0030.webp",
-    "/src/assets/contenido/agenda-docente-secundario_0031.webp"
+    "/src/assets/productos/agenda-docente-secundario_0001.webp",
+    "/src/assets/productos/agenda-docente-secundario_0005.mp4",
+    "/src/assets/productos/agenda-docente-secundario_0002.webp",
+    "/src/assets/productos/agenda-docente-secundario_0003.webp",
+    "/src/assets/productos/agenda-docente-secundario_0004.webp",
+    "/src/assets/productos/agenda-docente-secundario_0006.webp",
+    "/src/assets/productos/agenda-docente-secundario_0007.webp",
+    "/src/assets/productos/agenda-docente-secundario_0008.webp",
+    "/src/assets/productos/agenda-docente-secundario_0009.webp",
+    "/src/assets/productos/agenda-docente-secundario_0010.webp",
+    "/src/assets/productos/agenda-docente-secundario_0011.webp",
+    "/src/assets/productos/agenda-docente-secundario_0012.webp",
+    "/src/assets/productos/agenda-docente-secundario_0013.webp",
+    "/src/assets/productos/agenda-docente-secundario_0014.webp",
+    "/src/assets/productos/agenda-docente-secundario_0015.webp",
+    "/src/assets/productos/agenda-docente-secundario_0016.webp",
+    "/src/assets/productos/agenda-docente-secundario_0017.webp",
+    "/src/assets/productos/agenda-docente-secundario_0018.webp",
+    "/src/assets/productos/agenda-docente-secundario_0019.webp",
+    "/src/assets/productos/agenda-docente-secundario_0020.webp",
+    "/src/assets/productos/agenda-docente-secundario_0021.webp",
+    "/src/assets/productos/agenda-docente-secundario_0022.webp",
+    "/src/assets/productos/agenda-docente-secundario_0023.webp",
+    "/src/assets/productos/agenda-docente-secundario_0024.webp",
+    "/src/assets/productos/agenda-docente-secundario_0025.webp",
+    "/src/assets/productos/agenda-docente-secundario_0026.webp",
+    "/src/assets/productos/agenda-docente-secundario_0027.webp",
+    "/src/assets/productos/agenda-docente-secundario_0028.webp",
+    "/src/assets/productos/agenda-docente-secundario_0029.webp"
   ],
   "agenda-semanal": [
-    "/src/assets/contenido/agenda-semanal_0001.webp",
-    "/src/assets/contenido/agenda-semanal_0002.webp",
-    "/src/assets/contenido/agenda-semanal_0003.webp",
-    "/src/assets/contenido/agenda-semanal_0004.webp",
-    "/src/assets/contenido/agenda-semanal_0005.webp",
-    "/src/assets/contenido/agenda-semanal_0006.webp",
-    "/src/assets/contenido/agenda-semanal_0007.webp",
-    "/src/assets/contenido/agenda-semanal_0008.webp",
-    "/src/assets/contenido/agenda-semanal_0010.webp",
-    "/src/assets/contenido/agenda-semanal_0011.webp",
-    "/src/assets/contenido/agenda-semanal_0012.webp",
-    "/src/assets/contenido/agenda-semanal_0013.webp",
-    "/src/assets/contenido/agenda-semanal_0014.webp",
-    "/src/assets/contenido/agenda-semanal_0021.webp",
-    "/src/assets/contenido/agenda-semanal_0024.webp",
-    "/src/assets/contenido/agenda-semanal_0026.webp",
-    "/src/assets/contenido/agenda-semanal_0027.webp",
-    "/src/assets/contenido/agenda-semanal_0028.webp",
-    "/src/assets/contenido/agenda-semanal_0029.webp"
+    "/src/assets/productos/agenda-semanal_0001.webp",
+    "/src/assets/productos/agenda-semanal_0015.mp4",
+    "/src/assets/productos/agenda-semanal_0002.webp",
+    "/src/assets/productos/agenda-semanal_0003.webp",
+    "/src/assets/productos/agenda-semanal_0004.webp",
+    "/src/assets/productos/agenda-semanal_0005.webp",
+    "/src/assets/productos/agenda-semanal_0006.webp",
+    "/src/assets/productos/agenda-semanal_0007.webp",
+    "/src/assets/productos/agenda-semanal_0008.webp",
+    "/src/assets/productos/agenda-semanal_0009.webp",
+    "/src/assets/productos/agenda-semanal_0010.webp",
+    "/src/assets/productos/agenda-semanal_0011.webp",
+    "/src/assets/productos/agenda-semanal_0012.webp",
+    "/src/assets/productos/agenda-semanal_0013.webp",
+    "/src/assets/productos/agenda-semanal_0014.webp",
+    "/src/assets/productos/agenda-semanal_0016.webp",
+    "/src/assets/productos/agenda-semanal_0017.webp",
+    "/src/assets/productos/agenda-semanal_0018.webp",
+    "/src/assets/productos/agenda-semanal_0019.mp4",
+    "/src/assets/productos/agenda-semanal_0020.webp",
+    "/src/assets/productos/agenda-semanal_0021.webp",
+    "/src/assets/productos/agenda-semanal_0022.webp",
+    "/src/assets/productos/agenda-semanal_0023.webp"
+  ],
+  "block-de-organizacion-semanal": [
+    "/src/assets/productos/block-de-organizacion-semanal_0001.webp",
+    "/src/assets/productos/block-de-organizacion-semanal_0004.mp4",
+    "/src/assets/productos/block-de-organizacion-semanal_0002.webp",
+    "/src/assets/productos/block-de-organizacion-semanal_0003.webp",
+    "/src/assets/productos/block-de-organizacion-semanal_0005.webp",
+    "/src/assets/productos/block-de-organizacion-semanal_0006.webp"
+  ],
+  "cuaderno-con-planner-perpetuo": [
+    "/src/assets/productos/cuaderno-con-planner-perpetuo_0001.webp",
+    "/src/assets/productos/cuaderno-con-planner-perpetuo_0003.mp4",
+    "/src/assets/productos/cuaderno-con-planner-perpetuo_0002.webp",
+  ],
+  "cuaderno-de-pedidos": [
+    "/src/assets/productos/cuaderno-de-pedidos_0001.webp",
+    "/src/assets/productos/cuaderno-de-pedidos_0004.mp4",
+    "/src/assets/productos/cuaderno-de-pedidos_0002.webp",
+    "/src/assets/productos/cuaderno-de-pedidos_0003.webp",
+    "/src/assets/productos/cuaderno-de-pedidos_0005.webp",
+    "/src/assets/productos/cuaderno-de-pedidos_0006.webp",
+    "/src/assets/productos/cuaderno-de-pedidos_0007.webp",
+    "/src/assets/productos/cuaderno-de-pedidos_0008.webp"
   ],
   "cuaderno-docente": [
-    "/src/assets/contenido/cuaderno-docente_0001.webp",
-    "/src/assets/contenido/cuaderno-docente_0002.webp",
-    "/src/assets/contenido/cuaderno-docente_0003.webp",
-    "/src/assets/contenido/cuaderno-docente_0004.webp",
-    "/src/assets/contenido/cuaderno-docente_0005.webp",
-    "/src/assets/contenido/cuaderno-docente_0006.webp",
-    "/src/assets/contenido/cuaderno-docente_0007.webp",
-    "/src/assets/contenido/cuaderno-docente_0008.webp",
-    "/src/assets/contenido/cuaderno-docente_0009.webp",
-    "/src/assets/contenido/cuaderno-docente_0010.webp"
+    "/src/assets/productos/cuaderno-docente_0001.webp",
+    "/src/assets/productos/cuaderno-docente_0002.webp",
+    "/src/assets/productos/cuaderno-docente_0003.webp",
+    "/src/assets/productos/cuaderno-docente_0004.webp",
+    "/src/assets/productos/cuaderno-docente_0005.webp",
+    "/src/assets/productos/cuaderno-docente_0006.webp",
+    "/src/assets/productos/cuaderno-docente_0007.webp",
+    "/src/assets/productos/cuaderno-docente_0008.webp",
+    "/src/assets/productos/cuaderno-docente_0009.webp",
+    "/src/assets/productos/cuaderno-docente_0010.webp",
+    "/src/assets/productos/cuaderno-docente_0011.webp"
   ],
   "cuaderno-emprendedor": [
-    "/src/assets/contenido/cuaderno-emprendedor_0001.webp"
+    "/src/assets/productos/cuaderno-emprendedor_0001.webp",
+    "/src/assets/productos/cuaderno-emprendedor_0002.webp",
+    "/src/assets/productos/cuaderno-emprendedor_0003.webp"
   ],
-  "planner-semanal-perpetuo": [
-    "/src/assets/contenido/planner-semanal-perpetuo_0001.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0002.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0003.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0004.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0005.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0006.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0007.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0008.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0009.webp",
-    "/src/assets/contenido/planner-semanal-perpetuo_0010.webp"
+  "personalizados": [
+    "/src/assets/productos/personalizados_0001.mp4",
+    "/src/assets/productos/personalizados_0016.mp4",
+    "/src/assets/productos/personalizados_0002.webp",
+    "/src/assets/productos/personalizados_0003.webp",
+    "/src/assets/productos/personalizados_0004.webp",
+    "/src/assets/productos/personalizados_0005.webp",
+    "/src/assets/productos/personalizados_0006.webp",
+    "/src/assets/productos/personalizados_0007.webp",
+    "/src/assets/productos/personalizados_0008.webp",
+    "/src/assets/productos/personalizados_0009.webp",
+    "/src/assets/productos/personalizados_0010.webp",
+    "/src/assets/productos/personalizados_0011.webp",
+    "/src/assets/productos/personalizados_0012.webp",
+    "/src/assets/productos/personalizados_0013.webp",
+    "/src/assets/productos/personalizados_0014.webp",
+    "/src/assets/productos/personalizados_0015.webp",
+  ],
+  "planner-mensual-perpetuo-tapa-blanda": [
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0001.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0002.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0003.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0004.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0005.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0006.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0007.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0008.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0009.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0010.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0011.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0012.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0013.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0014.webp",
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0015.webp"
+  ],
+  "planner-semanal-perpetuo-tapa-blanda": [
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-blanda_0001.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-blanda_0002.mp4"
+  ],
+  "planner-semanal-perpetuo-tapa-dura": [
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0001.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0012.mp4",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0002.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0003.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0004.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0005.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0006.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0007.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0008.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0009.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0010.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0011.webp",
   ],
   "recetarios": [
-    "/src/assets/contenido/recetarios_0001.webp",
-    "/src/assets/contenido/recetarios_0002.webp",
-    "/src/assets/contenido/recetarios_0003.webp",
-    "/src/assets/contenido/recetarios_0005.webp"
+    "/src/assets/productos/recetarios_0001.webp",
+    "/src/assets/productos/recetarios_0014.mp4",
+    "/src/assets/productos/recetarios_0002.webp",
+    "/src/assets/productos/recetarios_0003.webp",
+    "/src/assets/productos/recetarios_0004.webp",
+    "/src/assets/productos/recetarios_0005.webp",
+    "/src/assets/productos/recetarios_0006.webp",
+    "/src/assets/productos/recetarios_0007.webp",
+    "/src/assets/productos/recetarios_0008.webp",
+    "/src/assets/productos/recetarios_0009.webp",
+    "/src/assets/productos/recetarios_0010.webp",
+    "/src/assets/productos/recetarios_0011.webp",
+    "/src/assets/productos/recetarios_0012.webp",
+    "/src/assets/productos/recetarios_0013.webp",
+    "/src/assets/productos/recetarios_0015.webp"
+  ],
+  "cuaderno-a4-tapa-blanda": [
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0001.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0002.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0003.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0004.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0005.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0006.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0007.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0008.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0009.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0010.webp",
   ]
 }
 
@@ -123,7 +285,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: modelAssets["agenda-semanal"]
+    images: productoImagenes["agenda-semanal"]
   },
   {
     id: "2",
@@ -152,7 +314,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: modelAssets["agenda-semanal"]
+    images: productoImagenes["agenda-2-dias-por-hoja"]
   },
   {
     id: "3",
@@ -182,7 +344,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: modelAssets["agenda-semanal"]
+    images: productoImagenes["agenda-universitaria-2026"]
   },
   {
     id: "4",
@@ -223,7 +385,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: modelAssets["agenda-docente-secundario"]
+    images: productoImagenes["agenda-docente-inicial"]
   },
   {
     id: "5",
@@ -267,7 +429,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: modelAssets["agenda-docente-secundario"]
+    images: productoImagenes["agenda-docente-primario"]
   },
   {
     id: "6",
@@ -307,7 +469,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: modelAssets["agenda-docente-secundario"]
+    images: productoImagenes["agenda-docente-secundario"]
   },
   {
     id: "7",
@@ -331,7 +493,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: modelAssets["planner-semanal-perpetuo"]
+    images: productoImagenes["cuaderno-con-planner-perpetuo"]
   },
   {
     id: "8",
@@ -353,7 +515,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: modelAssets["planner-semanal-perpetuo"]
+    images: productoImagenes["cuaderno-a4-tapa-blanda"]
   },
   {
     id: "9",
@@ -375,7 +537,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: modelAssets["planner-semanal-perpetuo"]
+    images: productoImagenes["cuaderno-a4-tapa-blanda"]
   },
   {
     id: "10",
@@ -404,7 +566,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: modelAssets["cuaderno-emprendedor"]
+    images: productoImagenes["cuaderno-emprendedor"]
   },
   {
     id: "11",
@@ -425,7 +587,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: modelAssets["cuaderno-emprendedor"]
+    images: productoImagenes["cuaderno-de-pedidos"]
   },
   {
     id: "12",
@@ -449,7 +611,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: modelAssets["planner-semanal-perpetuo"]
+    images: productoImagenes["planner-semanal-perpetuo-tapa-blanda"]
   },
   {
     id: "13",
@@ -471,7 +633,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 10,
-    images: modelAssets["recetarios"]
+    images: productoImagenes["recetarios"]
   },
   {
     id: "14",
@@ -494,7 +656,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 10,
-    images: modelAssets["agenda-docente-secundario"]
+    images: productoImagenes["cuaderno-docente"]
   }
 ];
 

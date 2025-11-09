@@ -1,12 +1,20 @@
+// src/components/products/ProductImageGallery.tsx
 import { useState, useId, useRef, useEffect } from "react";
-import { Maximize2 } from "lucide-react";
+import { Maximize2, Play } from "lucide-react";
 import clsx from "clsx";
 
 type Props = {
-  images: string[];
+  images: string[];                 // puede contener URLs de imágenes o videos
   altBase?: string;
   className?: string;
   onOpenFullscreen?: (src: string) => void;
+};
+
+const VIDEO_EXT_RE = /\.(mp4|webm|ogg|ogv|mov|m4v)$/i;
+const isVideo = (src: string) => {
+  // Ignora querystrings al evaluar la extensión
+  const clean = src.split("?")[0];
+  return VIDEO_EXT_RE.test(clean);
 };
 
 export default function ProductImageGallery({
@@ -34,12 +42,13 @@ export default function ProductImageGallery({
     thumbRefs.current[next]?.focus();
   };
 
+  const currentSrc = images[index];
+  const currentIsVideo = isVideo(currentSrc);
+
   return (
     <section
       className={clsx(
-        // Mobile-first: que nunca se pase del ancho
         "w-full max-w-full min-w-0",
-        // Grid: en desktop deja columna para thumbs
         "grid gap-4 lg:grid-cols-[100px,1fr]",
         className
       )}
@@ -48,7 +57,7 @@ export default function ProductImageGallery({
     >
       {/* Thumbs */}
       <div className="order-2 lg:order-1 min-w-0">
-        {/* Mobile: fila con scroll-x (sin márgenes negativos) */}
+        {/* Mobile: fila con scroll-x */}
         <div
           className="
             flex lg:hidden flex-nowrap gap-3
@@ -69,6 +78,7 @@ export default function ProductImageGallery({
         >
           {images.map((src, i) => {
             const selected = i === index;
+            const video = isVideo(src);
             return (
               <button
                 key={i}
@@ -77,17 +87,35 @@ export default function ProductImageGallery({
                 role="option"
                 aria-selected={selected}
                 className={clsx(
-                  "snap-center flex-none w-20 h-20 rounded-xl overflow-hidden ring-1 ring-slate-300/50 bg-white shadow-sm",
+                  "relative snap-center flex-none w-20 h-20 rounded-xl overflow-hidden ring-1 ring-slate-300/50 bg-white shadow-sm",
                   selected ? "ring-2 ring-primary" : "hover:ring-2 hover:ring-slate-400/60"
                 )}
                 onClick={() => select(i)}
+                title={video ? "Miniatura de video" : `Miniatura ${i + 1}`}
               >
-                <img
-                  src={src}
-                  alt={`${altBase} miniatura ${i + 1}`}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                {video ? (
+                  <>
+                    <video
+                      src={src}
+                      preload="metadata"     // no descarga el video completo
+                      muted
+                      playsInline            // iOS: reproducción inline
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute inset-0 grid place-items-center">
+                      <span className="rounded-full bg-black/50 text-white p-1.5">
+                        <Play className="w-4 h-4" />
+                      </span>
+                    </span>
+                  </>
+                ) : (
+                  <img
+                    src={src}
+                    alt={`${altBase} miniatura ${i + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                )}
               </button>
             );
           })}
@@ -114,6 +142,7 @@ export default function ProductImageGallery({
         >
           {images.map((src, i) => {
             const selected = i === index;
+            const video = isVideo(src);
             return (
               <button
                 key={i}
@@ -122,24 +151,42 @@ export default function ProductImageGallery({
                 role="option"
                 aria-selected={selected}
                 className={clsx(
-                  "snap-start w-full aspect-square rounded-xl overflow-hidden ring-1 ring-slate-300/50 bg-white shadow-sm",
+                  "relative snap-start w-full aspect-square rounded-xl overflow-hidden ring-1 ring-slate-300/50 bg-white shadow-sm",
                   selected ? "ring-2 ring-primary" : "hover:ring-2 hover:ring-slate-400/60"
                 )}
                 onClick={() => select(i)}
+                title={video ? "Miniatura de video" : `Miniatura ${i + 1}`}
               >
-                <img
-                  src={src}
-                  alt={`${altBase} miniatura ${i + 1}`}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
+                {video ? (
+                  <>
+                    <video
+                      src={src}
+                      preload="metadata"
+                      muted
+                      playsInline
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute inset-0 grid place-items-center">
+                      <span className="rounded-full bg-black/50 text-white p-1.5">
+                        <Play className="w-4 h-4" />
+                      </span>
+                    </span>
+                  </>
+                ) : (
+                  <img
+                    src={src}
+                    alt={`${altBase} miniatura ${i + 1}`}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                )}
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Imagen principal */}
+      {/* Vista principal (imagen o video) */}
       <div className="order-1 lg:order-2 relative min-w-0">
         <div
           className="
@@ -147,32 +194,34 @@ export default function ProductImageGallery({
             rounded-2xl bg-muted/60 ring-1 ring-slate-200 overflow-hidden
             flex items-center justify-center
             p-3 sm:p-4
-            /* Alto máximo seguro en mobile, sin recortar */
             max-h-[70svh] sm:max-h-[75svh] md:max-h-[80svh]
           "
         >
-          <img
-            src={images[index]}
-            alt={`${altBase} ${index + 1} de ${images.length}`}
-            className="max-w-full max-h-full object-contain select-none"
-          />
-        </div>
+          {currentIsVideo ? (
+            <video
+              key={currentSrc}      // fuerza refresco al cambiar
+              src={currentSrc}
+              controls
+              playsInline
+              preload="metadata"
+              className="max-w-full max-h-full object-contain"
+              // poster="(opcional) /ruta/preview.jpg"
+              aria-label={`${altBase} (video) ${index + 1} de ${images.length}`}
+            >
+              {/* Si querés ofrecer varios formatos: */}
+              {/* <source src="/ruta/video.webm" type="video/webm" />
+                  <source src="/ruta/video.mp4" type="video/mp4" /> */}
+            </video>
+          ) : (
+            <img
+              src={currentSrc}
+              alt={`${altBase} ${index + 1} de ${images.length}`}
+              className="max-w-full max-h-full object-contain select-none"
+            />
+          )}
 
-        {/* botón fullscreen opcional */}
-        {onOpenFullscreen && (
-          <button
-            className="
-              absolute top-2 right-2
-              inline-flex items-center justify-center
-              rounded-md bg-white/90 px-2 py-1 text-sm shadow hover:bg-white
-              ring-1 ring-slate-200
-            "
-            aria-label="Ver en pantalla completa"
-            onClick={() => onOpenFullscreen(images[index])}
-          >
-            <Maximize2 className="w-4 h-4" />
-          </button>
-        )}
+          
+        </div>
       </div>
     </section>
   );
