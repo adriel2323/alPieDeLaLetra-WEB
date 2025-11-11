@@ -1,20 +1,23 @@
 import { MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import vars from '@/data/data';
+import { buildWaLink } from '@/lib/whatsapp';
 
 interface WhatsAppButtonProps {
   message?: string;
   className?: string;
   variant?: 'default' | 'floating';
+  phone?: string; // override destination if needed
 }
 
-export const WhatsAppButton = ({ 
+export const WhatsAppButton = ({
   message = 'Hola! Me gustaría consultar sobre los productos de Al Pie de la Letra',
   className,
-  variant = 'default'
+  variant = 'default',
+  phone,
 }: WhatsAppButtonProps) => {
-  const phoneNumber = '5493364364774'; // Placeholder - user will update
-  const encodedMessage = encodeURIComponent(message);
-  const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+  const phoneNumber = phone ?? vars.phoneNumber ?? vars.social?.whatsapp ?? '';
+  const whatsappUrl = buildWaLink(phoneNumber, message);
 
   if (variant === 'floating') {
     return (

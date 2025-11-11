@@ -6,16 +6,13 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
 import { Trash2, Plus, Minus, ShoppingBag } from 'lucide-react';
+import { formatARS } from '@/lib/currency';
 
 const Cart = () => {
   const { items, removeItem, updateQuantity, getTotalPrice, clearCart } = useCart();
   
   const total = getTotalPrice();
-  const formattedTotal = new Intl.NumberFormat('es-AR', {
-    style: 'currency',
-    currency: 'ARS',
-    minimumFractionDigits: 0,
-  }).format(total);
+  const formattedTotal = formatARS(total);
 
   if (items.length === 0) {
     return (
@@ -50,11 +47,7 @@ const Cart = () => {
             <div className="lg:col-span-2 space-y-4">
               {items.map((item) => {
                 const itemTotal = item.price * item.quantity;
-                const formattedPrice = new Intl.NumberFormat('es-AR', {
-                  style: 'currency',
-                  currency: 'ARS',
-                  minimumFractionDigits: 0,
-                }).format(itemTotal);
+                const formattedPrice = formatARS(itemTotal);
 
                 return (
                   <Card key={`${item.product.id}-${item.selectedSize}-${item.selectedInterior}-${item.selectedCover}`}>

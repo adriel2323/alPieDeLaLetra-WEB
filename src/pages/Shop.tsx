@@ -6,6 +6,7 @@ import { ProductCard } from '@/components/products/ProductCard';
 import { WhatsAppButton } from '@/components/WhatsAppButton';
 import { products } from '@/data/products';
 import AppVars from '@/data/data';
+import { buildShopMessage } from '@/lib/whatsapp';
 import { useCart } from '@/hooks/use-cart';
 
 import { ProductCategory, ProductSize, InteriorType } from '@/types/product';
@@ -56,65 +57,12 @@ const Shop = () => {
     return categoryMatch && sizeMatch && interiorMatch;
   });
 
-  // formateador moneda
-  const fmtARS = (n: number) =>
-    new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(n);
-
-  // Construcción del mensaje de WhatsApp con TODO lo necesario
+  // Construcción del mensaje de WhatsApp (centralizado)
   const whatsappMessage = useMemo(() => {
-    const lines: string[] = [];
-
-    lines.push('¡Hola! Quiero *finalizar la compra* desde la tienda:');
-    lines.push('');
-
-    if (!items || items.length === 0) {
-      lines.push('_(Aún no tengo productos en el carrito. Te contacto para asesoramiento)_');
-    } else {
-      lines.push('*Carrito:*');
-      items.forEach((it, idx) => {
-        // Campos esperados en cada item (agregados en ProductDetail):
-        // it.product.name
-        // it.quantity
-        // it.price (unitario)
-        // it.selectedSize, it.selectedInterior, it.selectedCover
-        // it.selectedModel (opcional)
-        // it.personalization (opcional)
-        const subtotal = (it.price ?? it.product?.basePrice ?? 0) * (it.quantity ?? 1);
-
-        lines.push(`• ${idx + 1}) *${it.product?.name ?? 'Producto'}* x${it.quantity ?? 1}`);
-        if (it.selectedModel) lines.push(`   Modelo: ${it.selectedModel}`);
-        if (it.selectedSize) lines.push(`   Tamaño: ${it.selectedSize}`);
-        if (it.selectedInterior) lines.push(`   Interior: ${it.selectedInterior}`);
-        if (it.selectedCover) lines.push(`   Tapa: ${it.selectedCover}`);
-        if (it.personalization) lines.push(`   Personalización: “${it.personalization}”`);
-        lines.push(`   Unitario: ${fmtARS(it.price ?? it.product?.basePrice ?? 0)}  |  Subtotal: ${fmtARS(subtotal)}`);
-        lines.push('');
-      });
-      lines.push(`*Total estimado:* ${fmtARS(getTotalPrice())}`);
-      lines.push('');
-    }
-
-    // Datos del comprador
-    lines.push('*Datos del comprador:*');
-    lines.push(`• Nombre: ${buyerName || 'A completar'}`);
-    lines.push(`• Ciudad/Localidad: ${buyerCity || 'A completar'}`);
-    lines.push(`• Entrega: ${deliveryMethod === 'envio' ? 'Envío a domicilio' : 'Retiro en punto de entrega'}`);
-    if (deliveryMethod === 'envio') {
-      lines.push(`• Dirección: ${deliveryAddress || 'A completar'}`);
-    }
-    if (buyerNotes) {
-      lines.push(`• Notas: ${buyerNotes}`);
-    }
-    lines.push('');
-
-    // (Opcional) estilo preferido para guiar si el cliente viene a personalizar algo nuevo
-    const styleLabel = PERSONALIZATION_STYLES.find(s => s.id === styleId)?.label ?? 'A definir';
-    lines.push(`*Estilo de personalización preferido (guía):* ${styleLabel}`);
-    lines.push('');
-    lines.push('¿Me ayudás a coordinar el pedido? ¡Gracias!');
-
-    return lines.join('\n');
-  }, [items, getTotalPrice, buyerName, buyerCity, deliveryMethod, deliveryAddress, buyerNotes, styleId]);
+    const filters = { category: selectedCategory, size: selectedSize, interior: selectedInterior } as const;
+    const personalization = { styleId, buyerName, buyerCity, deliveryMethod, deliveryAddress, buyerNotes } as const;
+    return buildShopMessage(filters, personalization);
+  }, [selectedCategory, selectedSize, selectedInterior, styleId, buyerName, buyerCity, deliveryMethod, deliveryAddress, buyerNotes]);
 
   const waNumber = AppVars.phoneNumber; // ej.: 549336XXXXXXX
 
@@ -138,7 +86,7 @@ const Shop = () => {
         </section>
 
         {/* Filters */}
-        <section className="py-8 border-b bg-background sticky top-16 z-40">
+        <section className="py-8 border-b bg-background lg:sticky top-16 z-40 ">
           <div className="container px-4 w-full max-w-full">
             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-full">
               <Select value={selectedCategory} onValueChange={(v) => setSelectedCategory(v as ProductCategory | 'all')}>

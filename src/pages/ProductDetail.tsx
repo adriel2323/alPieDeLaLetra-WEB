@@ -1,5 +1,5 @@
 // src/pages/ProductDetail.tsx
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { ProductSize, InteriorType, CoverType, Product } from '@/types/product';
 import AppVars from '@/data/data';
+import { buildPdpMessage, buildWaLink } from '@/lib/whatsapp';
 
 // ⚠️ Asegurate del path real:
 import { AgendaModelSelector } from '@/components/products/AgendaModelOption';
@@ -26,8 +27,6 @@ import FullscreenModelDialog from '@/components/products/FullscreenModelDialog';
 
 // —— WhatsApp ——————————————————————————————————————————————
 const WHATSAPP_NUMBER = AppVars.phoneNumber;
-const buildWaLink = (message: string) =>
-  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
 const PERSONALIZATION_STYLES = [
   { id: 'nombre', label: 'Nombre/Iniciales' },
@@ -51,12 +50,18 @@ const ProductDetail = () => {
   const [selectedCover, setSelectedCover] = useState<CoverType>(product?.coverTypes?.[0] || 'dura');
   const [personalization, setPersonalization] = useState('');
   const [quantity, setQuantity] = useState(1);
+  const [openModel, setOpenModel] = useState(false);
 
   // ——— Modo (segmented control)
   const [mode, setMode] = useState<Mode>('ready');
 
   // ——— Modelo por ID (unificado)
   const [selectedModelId, setSelectedModelId] = useState<string>(modeloOptions[0]?.id ?? '');
+
+  useEffect(() => {
+    setOpenModel(true)
+  }, [setSelectedModelId]);
+
   const selectedModelDef = useMemo(
     () => modeloOptions.find(m => m.id === selectedModelId),
     [selectedModelId]
@@ -115,7 +120,26 @@ Cantidad: ${quantity}
     ].join('\n');
   }, [product?.name, selectedModelLabel, selectedSize, selectedInterior, selectedCover, personalization, styleId]);
 
-  const modeSpecificMessage = mode === 'custom' ? whatsappPersonalizationMessage : whatsappReadyMessage;
+  // Centralized message builders (new)
+  const waReadyMessage2 = useMemo(() => {
+    if (!product) return '';
+    return buildPdpMessage(
+      product,
+      { size: selectedSize, interior: selectedInterior, cover: selectedCover, modelLabel: selectedModelLabel, quantity },
+      personalization ? { text: personalization } : undefined,
+    );
+  }, [product, selectedModelLabel, selectedSize, selectedInterior, selectedCover, personalization, quantity]);
+
+  const waPersonalizationMessage2 = useMemo(() => {
+    if (!product) return '';
+    return buildPdpMessage(
+      product,
+      { size: selectedSize, interior: selectedInterior, cover: selectedCover, modelLabel: selectedModelLabel, quantity },
+      { text: personalization || undefined, styleId },
+    );
+  }, [product, selectedModelLabel, selectedSize, selectedInterior, selectedCover, personalization, styleId, quantity]);
+
+  const modeSpecificMessage = mode === 'custom' ? waPersonalizationMessage2 : waReadyMessage2;
 
   const formattedPrice = useMemo(() => {
     const base = product?.basePrice ?? 0;
@@ -165,6 +189,8 @@ Cantidad: ${quantity}
       </div>
     );
   }
+
+  
 
   return (
     <div className="min-h-screen overflow-x-clip">
@@ -329,6 +355,7 @@ Cantidad: ${quantity}
                   <FullscreenModelDialog
                     src={fsImage || selectedModelImage}
                     alt={product.name}
+                    openModel={selectedModelId}
                     trigger={
                       <Button variant="outline" className="w-full">
                         <Maximize2 className="w-4 h-4 mr-2" />
@@ -407,7 +434,7 @@ Cantidad: ${quantity}
                       Agregar al Carrito
                     </Button>
                     <Button asChild variant="outline" className="w-full">
-                      <a href={buildWaLink(whatsappReadyMessage)} target="_blank" rel="noopener noreferrer">
+                      <a href={buildWaLink(WHATSAPP_NUMBER, whatsappReadyMessage)} target="_blank" rel="noopener noreferrer">
                         Consultar por WhatsApp
                       </a>
                     </Button>
@@ -477,7 +504,7 @@ Cantidad: ${quantity}
                     {/* CTA principal custom */}
                     <div className="grid sm:grid-cols-2 gap-3">
                       <Button asChild className="w-full">
-                        <a href={buildWaLink(whatsappPersonalizationMessage)} target="_blank" rel="noopener noreferrer">
+                        <a href={buildWaLink(WHATSAPP_NUMBER, whatsappPersonalizationMessage)} target="_blank" rel="noopener noreferrer">
                           Definir personalización por WhatsApp
                         </a>
                       </Button>
@@ -504,6 +531,7 @@ Cantidad: ${quantity}
                     <FullscreenModelDialog
                       src={fsImage || selectedModelImage}
                       alt={product.name}
+                      openModel={selectedModelId}
                       trigger={
                         <Button variant="outline" className="w-full">
                           <Maximize2 className="w-4 h-4 mr-2" />
@@ -565,7 +593,7 @@ Cantidad: ${quantity}
                   {/* CTA secundaria en custom */}
                   <div className="space-y-3">
                     <Button asChild variant="outline" className="w-full">
-                      <a href={buildWaLink(whatsappPersonalizationMessage)} target="_blank" rel="noopener noreferrer">
+                      <a href={buildWaLink(WHATSAPP_NUMBER, whatsappPersonalizationMessage)} target="_blank" rel="noopener noreferrer">
                         Enviar detalles por WhatsApp
                       </a>
                     </Button>

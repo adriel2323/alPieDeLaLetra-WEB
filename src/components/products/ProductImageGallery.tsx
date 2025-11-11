@@ -125,7 +125,7 @@ export default function ProductImageGallery({
         <div
           className="
             hidden lg:flex lg:flex-col gap-3
-            lg:max-h-[70svh] xl:max-h-[75svh] min-h-0
+            lg:max-h-[50svh] xl:max-h-[55svh] min-h-0
             overflow-y-auto pr-1
             snap-y snap-mandatory
             [scrollbar-width:thin] [scrollbar-color:theme(colors.slate.400)_transparent]
@@ -222,6 +222,16 @@ export default function ProductImageGallery({
 
           
         </div>
+        {onOpenFullscreen && (
+          <button
+            type="button"
+            aria-label="Ver en pantalla completa"
+            className="absolute top-3 right-3 inline-flex items-center justify-center rounded-full bg-black/40 text-white p-2 hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-white"
+            onClick={() => onOpenFullscreen(currentSrc)}
+          >
+            <Maximize2 className="w-4 h-4" />
+          </button>
+        )}
       </div>
     </section>
   );

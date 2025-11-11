@@ -6,24 +6,9 @@ import libreta from '@/assets/libreta.jpg';
 
 export const productoImagenes: ModelAssets = 
 {
-  "agenda-universitaria-2026": [
-    "/src/assets/productos/agenda-universitaria-2026_0001.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0004.mp4",
-    "/src/assets/productos/agenda-universitaria-2026_0002.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0003.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0005.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0006.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0007.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0008.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0009.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0010.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0011.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0012.webp",
-    "/src/assets/productos/agenda-universitaria-2026_0013.webp",
-  ],
   "agenda-2-dias-por-hoja": [
     "/src/assets/productos/agenda-2-dias-por-hoja_0001.webp",
-    "/src/assets/productos/agenda-2-dias-por-hoja_0002.webp",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0002.mp4",
     "/src/assets/productos/agenda-2-dias-por-hoja_0003.webp",
     "/src/assets/productos/agenda-2-dias-por-hoja_0004.webp",
     "/src/assets/productos/agenda-2-dias-por-hoja_0005.webp",
@@ -36,12 +21,11 @@ export const productoImagenes: ModelAssets =
     "/src/assets/productos/agenda-2-dias-por-hoja_0012.webp",
     "/src/assets/productos/agenda-2-dias-por-hoja_0013.webp",
     "/src/assets/productos/agenda-2-dias-por-hoja_0014.webp",
-    "/src/assets/productos/agenda-2-dias-por-hoja_0015.webp",
-    "/src/assets/productos/agenda-2-dias-por-hoja_0016.mp3",
+    "/src/assets/productos/agenda-2-dias-por-hoja_0015.webp"
   ],
   "agenda-docente-inicial": [
-    "/src/assets/productos/agenda-docente-inicial_0001.webp",
-    "/src/assets/productos/agenda-docente-inicial_0002.mp4",
+    "/src/assets/productos/agenda-docente-inicial_0002.webp",
+    "/src/assets/productos/agenda-docente-inicial_0001.mp4",
     "/src/assets/productos/agenda-docente-inicial_0003.webp",
     "/src/assets/productos/agenda-docente-inicial_0004.webp",
     "/src/assets/productos/agenda-docente-inicial_0005.webp",
@@ -52,16 +36,10 @@ export const productoImagenes: ModelAssets =
     "/src/assets/productos/agenda-docente-inicial_0010.webp",
     "/src/assets/productos/agenda-docente-inicial_0011.webp",
     "/src/assets/productos/agenda-docente-inicial_0012.webp",
-    "/src/assets/productos/agenda-docente-inicial_0013.webp",
-    "/src/assets/productos/agenda-docente-inicial_0014.webp",
-    "/src/assets/productos/agenda-docente-inicial_0015.webp",
-    "/src/assets/productos/agenda-docente-inicial_0016.webp",
-    "/src/assets/productos/agenda-docente-inicial_0017.webp",
-    "/src/assets/productos/agenda-docente-inicial_0018.webp"
+    "/src/assets/productos/agenda-docente-inicial_0013.webp"
   ],
   "agenda-docente-primario": [
     "/src/assets/productos/agenda-docente-primario_0001.webp",
-    "/src/assets/productos/agenda-docente-primario_0015.mp4",
     "/src/assets/productos/agenda-docente-primario_0002.webp",
     "/src/assets/productos/agenda-docente-primario_0003.webp",
     "/src/assets/productos/agenda-docente-primario_0004.webp",
@@ -71,17 +49,14 @@ export const productoImagenes: ModelAssets =
     "/src/assets/productos/agenda-docente-primario_0008.webp",
     "/src/assets/productos/agenda-docente-primario_0009.webp",
     "/src/assets/productos/agenda-docente-primario_0010.webp",
-    "/src/assets/productos/agenda-docente-primario_0011.webp",
-    "/src/assets/productos/agenda-docente-primario_0012.webp",
-    "/src/assets/productos/agenda-docente-primario_0013.webp",
-    "/src/assets/productos/agenda-docente-primario_0014.webp",
+    "/src/assets/productos/agenda-docente-primario_0011.mp4",
+    "/src/assets/productos/agenda-docente-primario_0012.webp"
   ],
   "agenda-docente-secundario": [
     "/src/assets/productos/agenda-docente-secundario_0001.webp",
-    "/src/assets/productos/agenda-docente-secundario_0005.mp4",
     "/src/assets/productos/agenda-docente-secundario_0002.webp",
     "/src/assets/productos/agenda-docente-secundario_0003.webp",
-    "/src/assets/productos/agenda-docente-secundario_0004.webp",
+    "/src/assets/productos/agenda-docente-secundario_0005.mp4",
     "/src/assets/productos/agenda-docente-secundario_0006.webp",
     "/src/assets/productos/agenda-docente-secundario_0007.webp",
     "/src/assets/productos/agenda-docente-secundario_0008.webp",
@@ -109,7 +84,6 @@ export const productoImagenes: ModelAssets =
   ],
   "agenda-semanal": [
     "/src/assets/productos/agenda-semanal_0001.webp",
-    "/src/assets/productos/agenda-semanal_0015.mp4",
     "/src/assets/productos/agenda-semanal_0002.webp",
     "/src/assets/productos/agenda-semanal_0003.webp",
     "/src/assets/productos/agenda-semanal_0004.webp",
@@ -122,38 +96,51 @@ export const productoImagenes: ModelAssets =
     "/src/assets/productos/agenda-semanal_0011.webp",
     "/src/assets/productos/agenda-semanal_0012.webp",
     "/src/assets/productos/agenda-semanal_0013.webp",
-    "/src/assets/productos/agenda-semanal_0014.webp",
-    "/src/assets/productos/agenda-semanal_0016.webp",
-    "/src/assets/productos/agenda-semanal_0017.webp",
-    "/src/assets/productos/agenda-semanal_0018.webp",
-    "/src/assets/productos/agenda-semanal_0019.mp4",
-    "/src/assets/productos/agenda-semanal_0020.webp",
-    "/src/assets/productos/agenda-semanal_0021.webp",
-    "/src/assets/productos/agenda-semanal_0022.webp",
-    "/src/assets/productos/agenda-semanal_0023.webp"
+    "/src/assets/productos/agenda-semanal_0014.webp"
+  ],
+  "agenda-universitaria-2026": [
+    "/src/assets/productos/agenda-universitaria-2026_0001.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0003.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0004.mp4",
+    "/src/assets/productos/agenda-universitaria-2026_0006.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0007.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0008.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0009.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0010.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0011.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0012.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0013.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0014.webp",
+    "/src/assets/productos/agenda-universitaria-2026_0015.webp"
   ],
   "block-de-organizacion-semanal": [
     "/src/assets/productos/block-de-organizacion-semanal_0001.webp",
-    "/src/assets/productos/block-de-organizacion-semanal_0004.mp4",
     "/src/assets/productos/block-de-organizacion-semanal_0002.webp",
     "/src/assets/productos/block-de-organizacion-semanal_0003.webp",
+    "/src/assets/productos/block-de-organizacion-semanal_0004.mp4",
     "/src/assets/productos/block-de-organizacion-semanal_0005.webp",
     "/src/assets/productos/block-de-organizacion-semanal_0006.webp"
   ],
+  "convertidos": [
+    "/src/assets/productos/convertidos_log.csv"
+  ],
+  "cuaderno-a4-tapa-blanda": [
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0001.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0002.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0003.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0004.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0005.webp",
+    "/src/assets/productos/cuaderno-a4-tapa-blanda_0006.webp"
+  ],
   "cuaderno-con-planner-perpetuo": [
     "/src/assets/productos/cuaderno-con-planner-perpetuo_0001.webp",
-    "/src/assets/productos/cuaderno-con-planner-perpetuo_0003.mp4",
-    "/src/assets/productos/cuaderno-con-planner-perpetuo_0002.webp",
+    "/src/assets/productos/cuaderno-con-planner-perpetuo_0002.mp4"
   ],
   "cuaderno-de-pedidos": [
     "/src/assets/productos/cuaderno-de-pedidos_0001.webp",
-    "/src/assets/productos/cuaderno-de-pedidos_0004.mp4",
     "/src/assets/productos/cuaderno-de-pedidos_0002.webp",
     "/src/assets/productos/cuaderno-de-pedidos_0003.webp",
-    "/src/assets/productos/cuaderno-de-pedidos_0005.webp",
-    "/src/assets/productos/cuaderno-de-pedidos_0006.webp",
-    "/src/assets/productos/cuaderno-de-pedidos_0007.webp",
-    "/src/assets/productos/cuaderno-de-pedidos_0008.webp"
+    "/src/assets/productos/cuaderno-de-pedidos_0004.mp4"
   ],
   "cuaderno-docente": [
     "/src/assets/productos/cuaderno-docente_0001.webp",
@@ -166,12 +153,24 @@ export const productoImagenes: ModelAssets =
     "/src/assets/productos/cuaderno-docente_0008.webp",
     "/src/assets/productos/cuaderno-docente_0009.webp",
     "/src/assets/productos/cuaderno-docente_0010.webp",
-    "/src/assets/productos/cuaderno-docente_0011.webp"
+    "/src/assets/productos/cuaderno-docente_0011.webp",
+    "/src/assets/productos/cuaderno-docente_0012.webp"
   ],
   "cuaderno-emprendedor": [
     "/src/assets/productos/cuaderno-emprendedor_0001.webp",
     "/src/assets/productos/cuaderno-emprendedor_0002.webp",
     "/src/assets/productos/cuaderno-emprendedor_0003.webp"
+  ],
+  "cuaderno-tapa-dura-a5": [
+    "/src/assets/productos/cuaderno-tapa-dura-a5_0001.webp",
+    "/src/assets/productos/cuaderno-tapa-dura-a5_0002.webp",
+    "/src/assets/productos/cuaderno-tapa-dura-a5_0003.webp",
+    "/src/assets/productos/cuaderno-tapa-dura-a5_0004.webp",
+    "/src/assets/productos/cuaderno-tapa-dura-a5_0005.webp",
+    "/src/assets/productos/cuaderno-tapa-dura-a5_0006.webp"
+  ],
+  "libretas-a6": [
+    "/src/assets/productos/libretas-a6_0001.webp"
   ],
   "planner-mensual-perpetuo-tapa-blanda": [
     "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0001.webp",
@@ -185,10 +184,7 @@ export const productoImagenes: ModelAssets =
     "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0009.webp",
     "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0010.webp",
     "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0011.webp",
-    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0012.webp",
-    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0013.webp",
-    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0014.webp",
-    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0015.webp"
+    "/src/assets/productos/planner-mensual-perpetuo-tapa-blanda_0012.webp"
   ],
   "planner-semanal-perpetuo-tapa-blanda": [
     "/src/assets/productos/planner-semanal-perpetuo-tapa-blanda_0001.webp",
@@ -196,46 +192,18 @@ export const productoImagenes: ModelAssets =
   ],
   "planner-semanal-perpetuo-tapa-dura": [
     "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0001.webp",
-    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0012.mp4",
     "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0002.webp",
     "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0003.webp",
     "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0004.webp",
     "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0005.webp",
-    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0006.webp",
-    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0007.webp",
-    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0008.webp",
-    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0009.webp",
-    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0010.webp",
-    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0011.webp",
+    "/src/assets/productos/planner-semanal-perpetuo-tapa-dura_0006.webp"
   ],
   "recetarios": [
     "/src/assets/productos/recetarios_0001.webp",
-    "/src/assets/productos/recetarios_0014.mp4",
-    "/src/assets/productos/recetarios_0002.webp",
+    "/src/assets/productos/recetarios_0002.mp4",
     "/src/assets/productos/recetarios_0003.webp",
     "/src/assets/productos/recetarios_0004.webp",
-    "/src/assets/productos/recetarios_0005.webp",
-    "/src/assets/productos/recetarios_0006.webp",
-    "/src/assets/productos/recetarios_0007.webp",
-    "/src/assets/productos/recetarios_0008.webp",
-    "/src/assets/productos/recetarios_0009.webp",
-    "/src/assets/productos/recetarios_0010.webp",
-    "/src/assets/productos/recetarios_0011.webp",
-    "/src/assets/productos/recetarios_0012.webp",
-    "/src/assets/productos/recetarios_0013.webp",
-    "/src/assets/productos/recetarios_0015.webp"
-  ],
-  "cuaderno-a4-tapa-blanda": [
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0001.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0002.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0003.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0004.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0005.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0006.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0007.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0008.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0009.webp",
-    "/src/assets/productos/cuaderno-a4-tapa-blanda_0010.webp",
+    "/src/assets/productos/recetarios_0005.webp"
   ],
   "personalizados": [
     "/src/assets/personalizaciones/personalizados_0001.webp",
@@ -488,7 +456,7 @@ export const products: Product[] = [
     basePrice: 29700,
     sizes: ["A5"],
     interiors: ["Cuaderno con planner"],
-    coverTypes: [],
+    coverTypes: ["dura"],
     materials: ["Tapa dura", "hojas Interior 80g", "Espiral metálico doble alambre"],
     includes: [
       "Personalizacion de tapa incluida",
@@ -545,7 +513,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 15,
     remainingQuota: 15,
-    images: productoImagenes["cuaderno-a4-tapa-blanda"]
+    images: productoImagenes["cuaderno-tapa-dura-a5"]
   },
   {
     id: "10",
@@ -619,7 +587,7 @@ export const products: Product[] = [
     inStock: true,
     weeklyQuota: 10,
     remainingQuota: 15,
-    images: productoImagenes["planner-semanal-perpetuo-tapa-blanda"]
+    images: productoImagenes["planner-semanal-perpetuo-tapa-dura"]
   },
   {
     id: "13",

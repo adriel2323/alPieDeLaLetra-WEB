@@ -12,12 +12,9 @@ import { ArrowLeft, ShoppingCart } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '@/hooks/use-cart';
 import AppVars from '@/data/data';
-
-const fmtARS = (n: number) =>
-  new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS', minimumFractionDigits: 0 }).format(n);
-
-const buildWaLink = (phoneNumber: string, message: string) =>
-  `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+import { formatARS } from '@/lib/currency';
+import { buildCheckoutMessage, buildWaLink } from '@/lib/whatsapp';
+import type { BuyerInfo } from '@/types/cart';
 
 type DeliveryMethod = 'retiro' | 'envio';
 
@@ -36,51 +33,16 @@ const Checkout = () => {
   const [paymentMethod, setPaymentMethod] = useState<'efectivo' | 'transferencia' | 'mercado-pago'>('efectivo');
 
   const whatsappMessage = useMemo(() => {
-    const lines: string[] = [];
-    lines.push('¡Hola! Quiero *finalizar la compra* 👋');
-    lines.push('');
-
-    if (!items || items.length === 0) {
-      lines.push('_(No tengo productos en el carrito aún)_');
-    } else {
-      lines.push('*Detalle del pedido:*');
-      lines.push('');
-      items.forEach((it, idx) => {
-        const name = it.product?.name ?? 'Producto';
-        const qty = it.quantity ?? 1;
-        const unit = it.price ?? it.product?.basePrice ?? 0;
-        const subtotal = unit * qty;
-
-        lines.push(`• ${idx + 1}) *${name}* x${qty}`);
-        if (it.selectedModel) lines.push(`   Modelo: ${it.selectedModel}`);
-        if (it.selectedSize) lines.push(`   Tamaño: ${it.selectedSize}`);
-        if (it.selectedInterior) lines.push(`   Interior: ${it.selectedInterior}`);
-        if (it.selectedCover) lines.push(`   Tapa: ${it.selectedCover}`);
-        if (it.personalization) lines.push(`   Personalización: “${it.personalization}”`);
-        lines.push(`   Unitario: ${fmtARS(unit)}  |  Subtotal: ${fmtARS(subtotal)}`);
-        lines.push('');
-      });
-
-      lines.push(`*Total estimado:* ${fmtARS(getTotalPrice())}`);
-      lines.push('');
-    }
-
-    lines.push('*Datos del comprador:*');
-    lines.push(`• Nombre: ${buyerName || 'A completar'}`);
-    lines.push(`• Ciudad/Localidad: ${buyerCity || 'A completar'}`);
-    lines.push(`• Entrega: ${deliveryMethod === 'envio' ? 'Envío a domicilio' : 'Retiro en punto de entrega'}`);
-    if (deliveryMethod === 'envio') {
-      lines.push(`• Dirección: ${deliveryAddress || 'A completar'}`);
-    }
-    if (buyerNotes) {
-      lines.push(`• Notas: ${buyerNotes}`);
-    }
-    lines.push(`• Método de pago preferido: ${paymentMethod.replace('-', ' ')}`);
-    lines.push('');
-    lines.push('¿Me confirmás disponibilidad y próximos pasos? ¡Gracias!');
-
-    return lines.join('\n');
-  }, [items, getTotalPrice, buyerName, buyerCity, deliveryMethod, deliveryAddress, buyerNotes, paymentMethod]);
+    const buyer: BuyerInfo = {
+      name: buyerName,
+      city: buyerCity,
+      deliveryMethod,
+      address: deliveryAddress,
+      notes: buyerNotes,
+      paymentMethod,
+    };
+    return buildCheckoutMessage(items, buyer);
+  }, [items, buyerName, buyerCity, deliveryMethod, deliveryAddress, buyerNotes, paymentMethod]);
 
   const phoneNumber = AppVars.phoneNumber; // ej.: 549336XXXXXXX
   const waHref = buildWaLink(phoneNumber, whatsappMessage);
@@ -234,7 +196,7 @@ const Checkout = () => {
                           </div>
                           <div className="text-right shrink-0">
                             <p className="text-sm">x{it.quantity ?? 1}</p>
-                            <p className="text-sm text-muted-foreground">{fmtARS(unit)}</p>
+                            <p className="text-sm text-muted-foreground">{formatARS(unit)}</p>
                           </div>
                         </div>
                       </div>
@@ -244,7 +206,7 @@ const Checkout = () => {
 
                 <div className="flex items-center justify-between mt-4">
                   <p className="font-semibold">Total</p>
-                  <p className="font-semibold">{fmtARS(getTotalPrice())}</p>
+                  <p className="font-semibold">{formatARS(getTotalPrice())}</p>
                 </div>
 
 

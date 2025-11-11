@@ -9,7 +9,7 @@ export const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="space-y-4">
-            <img className='w-60' src="/src/assets/logo-largo.png" alt="" />
+            <img className='w-60' src="/src/assets/logo-largo.png" alt="Al Pie de la Letra - logo pie de página" />
             <p className="text-sm text-muted-foreground">
               Agendas y cuadernos artesanales 100% personalizados. Hechos a mano en San Nicolás, Argentina.
             </p>

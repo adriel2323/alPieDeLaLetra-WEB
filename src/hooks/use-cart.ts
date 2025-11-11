@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { CartItem } from '@/types/product';
+import { CartItem } from '@/types/cart';
 
 interface CartStore {
   items: CartItem[];
@@ -64,7 +64,15 @@ export const useCart = create<CartStore>()(
       },
     }),
     {
-      name: 'cart-storage',
+      name: 'cart:v1',
+      version: 1,
     }
   )
 );
+
+// Optional selectors for finer-grained subscriptions
+export const cartSelectors = {
+  items: (s: CartStore) => s.items,
+  count: (s: CartStore) => s.items.reduce((acc, it) => acc + it.quantity, 0),
+  total: (s: CartStore) => s.getTotalPrice(),
+};
